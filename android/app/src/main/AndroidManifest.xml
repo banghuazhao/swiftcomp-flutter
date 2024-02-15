@@ -4,7 +4,7 @@
     <application
         android:icon="@mipmap/launcher_icon"
         android:label="SwiftComp">
-        
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
