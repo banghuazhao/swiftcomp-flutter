@@ -181,7 +181,8 @@ class _LaminatePlatePropertiesPageState
       double alpha22 = transverselyIsotropicCTE.alpha22!;
       double alpha12 = transverselyIsotropicCTE.alpha12!;
 
-      Matrix temp = Matrix.fill(3, 1);
+      Matrix temp_eff = Matrix.fill(3, 1);
+      Matrix temp_flex = Matrix.fill(3, 1);
 
       for (int i = 0; i < nPly; i++) {
         double layup = layupSequence.layups![i];
@@ -218,14 +219,20 @@ class _LaminatePlatePropertiesPageState
           [2 * alpha12]
         ]);
 
-        temp += Qe * R_epsilon_e * cteVector * thickness;
+        temp_eff += Qe * R_epsilon_e * cteVector * thickness;
+        temp_flex += Qe * R_epsilon_e * cteVector * (thickness * bzi[i] * bzi[i] + thickness * thickness * thickness / 12);
       }
 
-      Matrix cteVector_effective = A.inverse() * temp;
+      Matrix cteVector_effective = A.inverse() * temp_eff;
+      Matrix cteVector_flexural = D.inverse() * temp_flex;
 
       inPlanePropertiesModel.alpha11 = cteVector_effective[0][0];
       inPlanePropertiesModel.alpha22 = cteVector_effective[1][0];
       inPlanePropertiesModel.alpha12 = cteVector_effective[2][0];
+
+      flexuralPropertiesModel.alpha11 = cteVector_flexural[0][0];
+      flexuralPropertiesModel.alpha22 = cteVector_flexural[1][0];
+      flexuralPropertiesModel.alpha12 = cteVector_flexural[2][0];
     }
 
     Navigator.push(
