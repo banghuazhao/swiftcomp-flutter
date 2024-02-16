@@ -37,6 +37,47 @@ class OrthotropicPropertiesWidget extends StatelessWidget {
     return valueString;
   }
 
+  double calculateHeight() {
+    if (orthotropicMaterial.alpha11 != null) {
+      return 40 * 12 + 20;
+    } else {
+      return 40 * 9 + 20;
+    }
+  }
+
+  List<Widget> chidren(BuildContext context) {
+    List<Widget> result = [
+      _propertyRow(context, "E1", orthotropicMaterial.e1),
+      const Divider(height: 1),
+      _propertyRow(context, "E2", orthotropicMaterial.e2),
+      const Divider(height: 1),
+      _propertyRow(context, "E3", orthotropicMaterial.e3),
+      const Divider(height: 1),
+      _propertyRow(context, "G12", orthotropicMaterial.g12),
+      const Divider(height: 1),
+      _propertyRow(context, "G13", orthotropicMaterial.g13),
+      const Divider(height: 1),
+      _propertyRow(context, "G23", orthotropicMaterial.g23),
+      const Divider(height: 1),
+      _propertyRow(context, "ν12", orthotropicMaterial.nu12),
+      const Divider(height: 1),
+      _propertyRow(context, "ν13", orthotropicMaterial.nu13),
+      const Divider(height: 1),
+      _propertyRow(context, "ν23", orthotropicMaterial.nu23),
+    ];
+    if (orthotropicMaterial.alpha11 != null) {
+      result += [
+        const Divider(height: 1),
+        _propertyRow(context, "ɑ11", orthotropicMaterial.alpha11),
+        const Divider(height: 1),
+        _propertyRow(context, "ɑ22", orthotropicMaterial.alpha22),
+        const Divider(height: 1),
+        _propertyRow(context, "ɑ12", orthotropicMaterial.alpha12),
+      ];
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -53,28 +94,10 @@ class OrthotropicPropertiesWidget extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-            height: 40 * 9 + 20,
+            height: calculateHeight(),
             child: ListView(
               physics: const NeverScrollableScrollPhysics(),
-              children: [
-                _propertyRow(context, "E1", orthotropicMaterial.e1),
-                const Divider(height: 1),
-                _propertyRow(context, "E2", orthotropicMaterial.e2),
-                const Divider(height: 1),
-                _propertyRow(context, "E3", orthotropicMaterial.e3),
-                const Divider(height: 1),
-                _propertyRow(context, "G12", orthotropicMaterial.g12),
-                const Divider(height: 1),
-                _propertyRow(context, "G13", orthotropicMaterial.g13),
-                const Divider(height: 1),
-                _propertyRow(context, "G23", orthotropicMaterial.g23),
-                const Divider(height: 1),
-                _propertyRow(context, "ν12", orthotropicMaterial.nu12),
-                const Divider(height: 1),
-                _propertyRow(context, "ν13", orthotropicMaterial.nu13),
-                const Divider(height: 1),
-                _propertyRow(context, "ν23", orthotropicMaterial.nu23),
-              ],
+              children: chidren(context),
             ),
           ),
         ],

@@ -83,7 +83,7 @@ class _LaminatePlatePropertiesResultPageState extends State<LaminatePlatePropert
                   ),
                   InPlanePropertiesWidget(
                     title: "Flexural Properties",
-                    explain: null,
+                    explain: "Flexural properties are only valid for symmetric laminates only.",
                     inPlanePropertiesModel: widget.flexuralPropertiesModel,
                   )
                 ][index];

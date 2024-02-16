@@ -102,6 +102,9 @@ class OrthotropicMaterial extends MechanicalMaterial {
   double? nu12;
   double? nu13;
   double? nu23;
+  double? alpha11;
+  double? alpha22;
+  double? alpha12;
 
   OrthotropicMaterial();
 
