@@ -147,7 +147,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
     final String confirmCodeFinal = confirmCode!;
 
     try {
-      UpdatePasswordResult res = await Amplify.Auth.confirmResetPassword(
+      ResetPasswordResult res = await Amplify.Auth.confirmResetPassword(
           username: emailFinal, newPassword: newPasswordFinal, confirmationCode: confirmCodeFinal);
       Fluttertoast.showToast(
           msg: "Successful",
