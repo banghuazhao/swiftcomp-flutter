@@ -181,9 +181,9 @@ class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
       hybridEngineeringConstants.nu12 = SHs_Temp[0][1];
       hybridEngineeringConstants.nu13 = SHs_Temp[0][2];
 
-      hybridEngineeringConstants.g12 = SHs_Temp[5][5];
-      hybridEngineeringConstants.g13 = SHs_Temp[4][4];
-      hybridEngineeringConstants.g23 = SHs_Temp[3][3];
+      hybridEngineeringConstants.g12 = 1 / SHs_Temp[5][5];
+      hybridEngineeringConstants.g13 = 1 / SHs_Temp[4][4];
+      hybridEngineeringConstants.g23 = 1 / SHs_Temp[3][3];
 
       hybridEngineeringConstants.e2 = 1 /
           (SHs_Temp[1][1] +
