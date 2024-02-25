@@ -1,66 +1,16 @@
 PODS:
-  - Amplify (1.23.0):
-    - Amplify/Default (= 1.23.0)
-  - Amplify/Default (1.23.0)
-  - amplify_analytics_pinpoint_ios (0.0.1):
-    - Amplify (= 1.23.0)
-    - amplify_core
-    - AmplifyPlugins/AWSPinpointAnalyticsPlugin (= 1.23.0)
+  - amplify_auth_cognito (0.0.1):
     - Flutter
-  - amplify_auth_cognito_ios (0.0.1):
-    - Amplify (= 1.23.0)
-    - amplify_core
-    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.23.0)
+    - FlutterMacOS
+  - amplify_secure_storage (0.0.1):
     - Flutter
-    - ObjectMapper
-  - amplify_core (0.0.1):
-    - Flutter
-    - SwiftFormat/CLI
-    - SwiftLint
-  - amplify_flutter_ios (0.0.1):
-    - Amplify (= 1.23.0)
-    - amplify_core
-    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.23.0)
-    - AWSPluginsCore (= 1.23.0)
-    - Flutter
-    - SwiftFormat/CLI
-    - SwiftLint
-  - AmplifyPlugins/AWSCognitoAuthPlugin (1.23.0):
-    - AWSAuthCore (~> 2.27.0)
-    - AWSCognitoIdentityProvider (~> 2.27.0)
-    - AWSCognitoIdentityProviderASF (~> 2.27.0)
-    - AWSCore (~> 2.27.0)
-    - AWSMobileClient (~> 2.27.0)
-    - AWSPluginsCore (= 1.23.0)
-  - AmplifyPlugins/AWSPinpointAnalyticsPlugin (1.23.0):
-    - AWSCore (~> 2.27.0)
-    - AWSPinpoint (~> 2.27.0)
-    - AWSPluginsCore (= 1.23.0)
   - app_tracking_transparency (0.0.1):
     - Flutter
-  - AWSAuthCore (2.27.15):
-    - AWSCore (= 2.27.15)
-  - AWSCognitoIdentityProvider (2.27.15):
-    - AWSCognitoIdentityProviderASF (= 2.27.15)
-    - AWSCore (= 2.27.15)
-  - AWSCognitoIdentityProviderASF (2.27.15):
-    - AWSCore (= 2.27.15)
-  - AWSCore (2.27.15)
-  - AWSMobileClient (2.27.15):
-    - AWSAuthCore (= 2.27.15)
-    - AWSCognitoIdentityProvider (= 2.27.15)
-    - AWSCognitoIdentityProviderASF (= 2.27.15)
-    - AWSCore (= 2.27.15)
-  - AWSPinpoint (2.27.15):
-    - AWSCore (= 2.27.15)
-  - AWSPluginsCore (1.23.0):
-    - Amplify (= 1.23.0)
-    - AWSCore (~> 2.27.0)
   - device_info (0.0.1):
     - Flutter
-  - Flutter (1.0.0)
-  - flutter_native_splash (0.0.1):
+  - device_info_plus (0.0.1):
     - Flutter
+  - Flutter (1.0.0)
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -117,78 +67,61 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
-  - ObjectMapper (4.2.0)
   - package_info_plus (0.4.5):
     - Flutter
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - PromisesObjC (2.3.1)
   - share (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - SwiftFormat/CLI (0.53.1)
-  - SwiftLint (0.54.0)
   - Toast (4.1.0)
   - url_launcher_ios (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - amplify_analytics_pinpoint_ios (from `.symlinks/plugins/amplify_analytics_pinpoint_ios/ios`)
-  - amplify_auth_cognito_ios (from `.symlinks/plugins/amplify_auth_cognito_ios/ios`)
-  - amplify_core (from `.symlinks/plugins/amplify_core/ios`)
-  - amplify_flutter_ios (from `.symlinks/plugins/amplify_flutter_ios/ios`)
+  - amplify_auth_cognito (from `.symlinks/plugins/amplify_auth_cognito/darwin`)
+  - amplify_secure_storage (from `.symlinks/plugins/amplify_secure_storage/ios`)
   - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
-  - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_mobile_ads (from `.symlinks/plugins/google_mobile_ads/ios`)
   - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
   - launch_review (from `.symlinks/plugins/launch_review/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
   trunk:
-    - Amplify
-    - AmplifyPlugins
-    - AWSAuthCore
-    - AWSCognitoIdentityProvider
-    - AWSCognitoIdentityProviderASF
-    - AWSCore
-    - AWSMobileClient
-    - AWSPinpoint
-    - AWSPluginsCore
     - Google-Mobile-Ads-SDK
     - GoogleAppMeasurement
     - GoogleUserMessagingPlatform
     - GoogleUtilities
     - nanopb
-    - ObjectMapper
     - PromisesObjC
-    - SwiftFormat
-    - SwiftLint
     - Toast
 
 EXTERNAL SOURCES:
-  amplify_analytics_pinpoint_ios:
-    :path: ".symlinks/plugins/amplify_analytics_pinpoint_ios/ios"
-  amplify_auth_cognito_ios:
-    :path: ".symlinks/plugins/amplify_auth_cognito_ios/ios"
-  amplify_core:
-    :path: ".symlinks/plugins/amplify_core/ios"
-  amplify_flutter_ios:
-    :path: ".symlinks/plugins/amplify_flutter_ios/ios"
+  amplify_auth_cognito:
+    :path: ".symlinks/plugins/amplify_auth_cognito/darwin"
+  amplify_secure_storage:
+    :path: ".symlinks/plugins/amplify_secure_storage/ios"
   app_tracking_transparency:
     :path: ".symlinks/plugins/app_tracking_transparency/ios"
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
     :path: Flutter
-  flutter_native_splash:
-    :path: ".symlinks/plugins/flutter_native_splash/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   google_mobile_ads:
@@ -199,6 +132,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/launch_review/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
   share:
     :path: ".symlinks/plugins/share/ios"
   shared_preferences_foundation:
@@ -207,23 +142,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  Amplify: 010d6a71db20812d9e3062db1fe827393d01e584
-  amplify_analytics_pinpoint_ios: 6353367c6b59d271fbea2715c5e257e5a84a89e4
-  amplify_auth_cognito_ios: c67d4bf0901717cb193f16ed24c389be7f4d7daf
-  amplify_core: e67fe0c53845db08aced670bfc7370b1329d2798
-  amplify_flutter_ios: a2cf41c13161ffefedab76055a29b2d4e78c91e8
-  AmplifyPlugins: d939707cf36dfcd53c5fd6533e842e323a2287ab
+  amplify_auth_cognito: 76b5a54f05f66f69966b468b8121a0dd33a32c70
+  amplify_secure_storage: 501cbdac671a050090d48dfcc002d5637d3f4a55
   app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
-  AWSAuthCore: 0bac0e67c28d620c8f823c88bd15d552544e801a
-  AWSCognitoIdentityProvider: a8d244d0cdfeff425fe20a2fb49b7e9cb89c4748
-  AWSCognitoIdentityProviderASF: 5dccf24b43c287eb1949e83cefccb6c25cdc04b7
-  AWSCore: c67277201b6aca10e4cf24638eadaa67c85ebf03
-  AWSMobileClient: 6f60d1fb6373e21aaada443dd4d4bf087158614d
-  AWSPinpoint: e2ea6471c4a4efd7a4d58546f34539c9dac185a7
-  AWSPluginsCore: 120cfa265293694921b6595fe00d1cb5ab558847
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
+  device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   fluttertoast: 31b00dabfa7fb7bacd9e7dbee580d7a2ff4bf265
   Google-Mobile-Ads-SDK: 05e5d68bb42a61b2e5bef336a52789785605aa22
   google_mobile_ads: 36eaaacc5c08ca2b9c4878232ab98152b11805cc
@@ -233,16 +157,14 @@ SPEC CHECKSUMS:
   in_app_review: 318597b3a06c22bb46dc454d56828c85f444f99d
   launch_review: 75d5a956ba8eaa493e9c9d4bf4c05e505e8d5ed0
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
+  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
-  SwiftFormat: a8623113c7adcbeb4289a013cac68ec801e1ed24
-  SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
   Toast: ec33c32b8688982cecc6348adeae667c1b9938da
   url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
 
-PODFILE CHECKSUM: 4e8f8b2be68aeea4c0d5beb6ff1e79fface1d048
+PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
 
 COCOAPODS: 1.14.3
