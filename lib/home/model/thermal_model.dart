@@ -11,7 +11,23 @@ class TransverselyIsotropicCTE extends MechanicalMaterial {
   TransverselyIsotropicCTE();
 
   isValid() {
-    if (alpha11 != null && alpha22 != null && alpha12 != null) {
+    if (alpha11 != null && alpha22 != null) {
+      return true;
+    }
+    return false;
+  }
+}
+
+class IsotropicCTE extends MechanicalMaterial {
+  @override
+  MechanicalMaterialType type = MechanicalMaterialType.isotropic;
+
+  double? alpha;
+
+  IsotropicCTE();
+
+  isValid() {
+    if (alpha != null) {
       return true;
     }
     return false;

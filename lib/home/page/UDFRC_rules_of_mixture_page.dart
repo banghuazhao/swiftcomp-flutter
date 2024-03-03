@@ -9,8 +9,13 @@ import 'package:swiftcomp/home/page/UDFRC_rules_of_mixture_result_page.dart';
 import 'package:swiftcomp/home/tools/DescriptionModels.dart';
 import 'package:swiftcomp/home/widget/description.dart';
 import 'package:swiftcomp/home/widget/isotropic_material_row.dart';
+import 'package:swiftcomp/home/widget/isotropic_thermal_constants_row.dart';
 import 'package:swiftcomp/home/widget/transversely_isotropic_row.dart';
 import 'package:swiftcomp/home/widget/volume_fraction_row.dart';
+
+import '../model/thermal_model.dart';
+import '../widget/analysis_type_row.dart';
+import '../widget/transversely_thermal_constants_row.dart';
 
 class RulesOfMixturePage extends StatefulWidget {
   const RulesOfMixturePage({Key? key}) : super(key: key);
@@ -24,6 +29,13 @@ class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
   IsotropicMaterial matrixMaterial = IsotropicMaterial();
   VolumeFraction fiberVolumeFraction = VolumeFraction();
   bool validate = false;
+  bool isElastic = true;
+
+  TransverselyIsotropicCTE transverselyIsotropicCTE =
+  TransverselyIsotropicCTE();
+
+  IsotropicCTE isotropicCTE =
+  IsotropicCTE();
 
   @override
   Widget build(BuildContext context) {
@@ -53,22 +65,36 @@ class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
               child: StaggeredGridView.countBuilder(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
                   crossAxisCount: 8,
-                  itemCount: 4,
+                  itemCount: isElastic ? 5 : 7,
                   staggeredTileBuilder: (int index) =>
                       StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12,
                   itemBuilder: (BuildContext context, int index) {
                     return [
+                      AnalysisType(callback: (type) {
+                        isElastic = type == "Elastic";
+                      }),
                       TransverselyIsotropicRow(
                         material: fiberMaterial,
                         validate: validate,
                       ),
+                      if (!isElastic)
+                        TransverselyThermalConstantsRow(
+                            material: transverselyIsotropicCTE,
+                            title: "Fiber CTEs",
+                            shouldConsider12: false,
+                            validate: validate),
                       IsotropicMaterialRow(
                         title: "Matrix Properties",
                         material: matrixMaterial,
                         validate: validate,
                       ),
+                      if (!isElastic)
+                        IsotropicThermalConstantsRow(material: isotropicCTE,
+                            title: "Matrix CTE",
+                            validate: validate
+                        ),
                       VolumeFractionRow(volumeFraction: fiberVolumeFraction, validate: validate),
                       DescriptionItem(
                           content: DescriptionModels.getDescription(
@@ -80,6 +106,11 @@ class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
 
   void _calculate() {
     if (fiberMaterial.isValid() && matrixMaterial.isValid() && fiberVolumeFraction.isValid()) {
+
+      if (!isElastic && !transverselyIsotropicCTE.isValid() && !isotropicCTE.isValid()) {
+        return;
+      }
+
       double Vf = fiberVolumeFraction.value!;
       // double Ef = fiberMaterial.e1!;
       // double nuf = fiberMaterial.nu12!;
@@ -223,6 +254,45 @@ class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
       ]);
 
       Matrix Chs = Shs.inverse();
+
+      if (!isElastic) {
+        double alpha11_f = transverselyIsotropicCTE.alpha11!;
+        double alpha22_f = transverselyIsotropicCTE.alpha22!;
+        Matrix cteVector_f = Matrix([
+          [alpha11_f],
+          [alpha22_f],
+          [alpha22_f],
+          [0],
+          [0],
+          [0]
+        ]);
+
+        double alpha_m = isotropicCTE.alpha!;
+        Matrix cteVector_m = Matrix([
+          [alpha_m],
+          [alpha_m],
+          [alpha_m],
+          [0],
+          [0],
+          [0]
+        ]);
+
+        Matrix alpha_V = CVs.inverse() * (Cf * Vf * cteVector_f + Cm * Vm * cteVector_m);
+        Matrix alpha_R = (cteVector_f * Vf  + cteVector_m * Vm);
+        voigtEngineeringConstants.alpha11 = alpha_V[0][0];
+        voigtEngineeringConstants.alpha22 = alpha_V[1][0];
+        voigtEngineeringConstants.alpha33 = alpha_V[2][0];
+
+        reussEngineeringConstants.alpha11 = alpha_R[0][0];
+        reussEngineeringConstants.alpha22 = alpha_R[1][0];
+        reussEngineeringConstants.alpha33 = alpha_R[2][0];
+
+        double alpha11_h = (Vf * ef1 * alpha11_f + Vm * em1 * alpha_m) / eh1;
+        hybridEngineeringConstants.alpha11 = alpha11_h;
+        double alpha22_h = (Vf * (alpha11_f * nuf12 + alpha22_f) + Vm * alpha_m * (1 + num) - alpha11_h * nuh12);
+        hybridEngineeringConstants.alpha22 = alpha22_h;
+        hybridEngineeringConstants.alpha33 = alpha22_h;
+      }
 
       Navigator.push(
           context,

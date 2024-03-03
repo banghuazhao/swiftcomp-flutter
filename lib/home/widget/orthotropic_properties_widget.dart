@@ -65,7 +65,7 @@ class OrthotropicPropertiesWidget extends StatelessWidget {
       const Divider(height: 1),
       _propertyRow(context, "ν23", orthotropicMaterial.nu23),
     ];
-    if (orthotropicMaterial.alpha11 != null) {
+    if (orthotropicMaterial.alpha11 != null && orthotropicMaterial.alpha33 == null) {
       result += [
         const Divider(height: 1),
         _propertyRow(context, "ɑ11", orthotropicMaterial.alpha11),
@@ -73,6 +73,16 @@ class OrthotropicPropertiesWidget extends StatelessWidget {
         _propertyRow(context, "ɑ22", orthotropicMaterial.alpha22),
         const Divider(height: 1),
         _propertyRow(context, "ɑ12", orthotropicMaterial.alpha12),
+      ];
+    }
+    if (orthotropicMaterial.alpha11 != null && orthotropicMaterial.alpha33 != null) {
+      result += [
+        const Divider(height: 1),
+        _propertyRow(context, "ɑ11", orthotropicMaterial.alpha11),
+        const Divider(height: 1),
+        _propertyRow(context, "ɑ22", orthotropicMaterial.alpha22),
+        const Divider(height: 1),
+        _propertyRow(context, "ɑ33", orthotropicMaterial.alpha33),
       ];
     }
     return result;
