@@ -104,6 +104,10 @@ class _Laminate3DPropertiesPageState extends State<Laminate3DPropertiesPage> {
       return;
     }
 
+    if (!isElastic && !transverselyIsotropicCTE.isValid()) {
+      return;
+    }
+
     double thickness = layerThickness.value!;
     int nPly = layupSequence.layups!.length;
 

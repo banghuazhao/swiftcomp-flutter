@@ -114,9 +114,9 @@ Calculate 3D properties of a laminate including effective 3D stiffness matrix, c
   \varepsilon_{11} \\
   \varepsilon_{22} \\
   \varepsilon_{33} \\
-  \gamma_{23} \\
-  \gamma_{13} \\
-  \gamma_{12}
+  2\gamma_{23} \\
+  2\gamma_{13} \\
+  2\gamma_{12}
 \end{Bmatrix}''',
               mathStyle: MathStyle.script,
               textStyle: TextStyle(fontSize: 13),
@@ -158,10 +158,10 @@ Calculate the plate properties of a laminate. The constitutive relations accordi
 \begin{Bmatrix}
   \epsilon_{11} \\
   \epsilon_{22} \\
-  \epsilon_{12} \\
+  2\epsilon_{12} \\
   \kappa_{11} \\
   \kappa_{22} \\
-  \kappa_{12}
+  2\kappa_{12}
 \end{Bmatrix}''',
               mathStyle: MathStyle.script,
               textStyle: TextStyle(fontSize: 13),
@@ -203,10 +203,10 @@ Calculate the plate strains/curvatures in terms of stress resultants, or vice ve
 \begin{Bmatrix}
   \epsilon_{11} \\
   \epsilon_{22} \\
-  \epsilon_{12} \\
+  2\epsilon_{12} \\
   \kappa_{11} \\
   \kappa_{22} \\
-  \kappa_{12}
+  2\kappa_{12}
 \end{Bmatrix}''',
               mathStyle: MathStyle.script,
               textStyle: TextStyle(fontSize: 13),

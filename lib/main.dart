@@ -1,16 +1,14 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:swiftcomp/generated/l10n.dart';
 import 'package:swiftcomp/util/NumberPrecisionHelper.dart';
-import 'package:swiftcomp/util/ads_manager.dart';
 import 'package:swiftcomp/util/in_app_reviewer_helper.dart';
 import 'package:swiftcomp/util/others.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 import 'amplifyconfiguration.dart';
 import 'home/page/tool_page.dart';
@@ -18,11 +16,9 @@ import 'home/page/tool_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  AppTrackingTransparency.requestTrackingAuthorization();
-
-  MobileAds.instance.initialize();
-
-  AdsManager.debugPrintID();
+  Future.delayed(Duration(seconds: 1), () {
+    AppTrackingTransparency.requestTrackingAuthorization();
+  });
 
   InAppReviewHelper.checkAndAskForReview();
 

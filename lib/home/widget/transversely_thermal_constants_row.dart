@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swiftcomp/home/tools/explain.dart';
@@ -7,9 +9,11 @@ import '../model/thermal_model.dart';
 
 class TransverselyThermalConstantsRow extends StatefulWidget {
   final TransverselyIsotropicCTE material;
+  final String title;
+  final bool shouldConsider12;
   final bool validate;
 
-  const TransverselyThermalConstantsRow({Key? key, required this.material, required this.validate})
+  const TransverselyThermalConstantsRow({Key? key, required this.material, this.title = "CTEs", this.shouldConsider12 = true, required this.validate})
       : super(key: key);
 
   @override
@@ -30,7 +34,7 @@ class _TransverselyThermalConstantsRowState extends State<TransverselyThermalCon
               title: Row(
                 children: [
                   Text(
-                    "CTEs",
+                    widget.title,
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   IconButton(
@@ -96,7 +100,8 @@ class _TransverselyThermalConstantsRowState extends State<TransverselyThermalCon
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Row(
+                  if (widget.shouldConsider12)
+                    Row(
                     children: [
                       Expanded(
                         child: TextField(
@@ -118,7 +123,8 @@ class _TransverselyThermalConstantsRowState extends State<TransverselyThermalCon
                       Expanded(child: Container()),
                     ],
                   ),
-                  const SizedBox(height: 12)
+                  if (widget.shouldConsider12)
+                    const SizedBox(height: 12)
                 ],
               ),
             ),
