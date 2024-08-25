@@ -38,11 +38,11 @@ class EmailConfirmationScreen extends StatelessWidget {
                 child: isFirst
                     ? Text(
                         "An email confirmation code is sent to $email. Please type the code to confirm your email.",
-                        style: Theme.of(context).textTheme.headline6,
+                        style: Theme.of(context).textTheme.titleMedium,
                       )
                     : Text(
                         "An email confirmation code has already been sent to $email. Please type the code to confirm your email.",
-                        style: Theme.of(context).textTheme.headline6,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
               ),
               Padding(

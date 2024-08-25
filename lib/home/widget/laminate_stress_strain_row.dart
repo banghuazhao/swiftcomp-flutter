@@ -49,7 +49,7 @@ class _LaminateStressStrainRowState extends State<LaminateStressStrainRow> {
               children: [
                 Text(
                   "Input",
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 DropdownButton<String>(
                   value: dropValue,

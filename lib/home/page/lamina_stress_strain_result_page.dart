@@ -108,7 +108,7 @@ class ResultPlaneStressStrainRow extends StatelessWidget {
           ListTile(
             title: Text(
               "Result",
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           Padding(
@@ -120,12 +120,12 @@ class ResultPlaneStressStrainRow extends StatelessWidget {
                   children: [
                     Text(
                       (mechanicalTensor is PlaneStress) ? "σ11" : "ε11",
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(
                       height: 8,
                     ),
-                    Text(getResultString(0), style: Theme.of(context).textTheme.bodyText1)
+                    Text(getResultString(0), style: Theme.of(context).textTheme.bodySmall)
                   ],
                 ),
                 const SizedBox(
@@ -135,12 +135,12 @@ class ResultPlaneStressStrainRow extends StatelessWidget {
                   children: [
                     Text(
                       (mechanicalTensor is PlaneStress) ? "σ22" : "ε22",
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(
                       height: 8,
                     ),
-                    Text(getResultString(1), style: Theme.of(context).textTheme.bodyText1)
+                    Text(getResultString(1), style: Theme.of(context).textTheme.bodySmall)
                   ],
                 ),
                 const SizedBox(
@@ -150,12 +150,12 @@ class ResultPlaneStressStrainRow extends StatelessWidget {
                   children: [
                     Text(
                       (mechanicalTensor is PlaneStress) ? "σ12" : "γ12",
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(
                       height: 8,
                     ),
-                    Text(getResultString(2), style: Theme.of(context).textTheme.bodyText1)
+                    Text(getResultString(2), style: Theme.of(context).textTheme.bodySmall)
                   ],
                 ),
               ],

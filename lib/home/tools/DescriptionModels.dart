@@ -20,7 +20,7 @@ class DescriptionModels {
         children: [
           Text("""
 Compute the stress/strain of an orthotropic lamina. The plane stress-strain relations in the material coordinate system can be expressed as:""",
-              style: Theme.of(context).textTheme.bodyText2),
+              style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(
             height: 12,
           ),
@@ -40,7 +40,7 @@ Compute the stress/strain of an orthotropic lamina. The plane stress-strain rela
   \sigma_{12}
 \end{Bmatrix}''',
               mathStyle: MathStyle.script,
-              textStyle: Theme.of(context).textTheme.bodyText1,
+              textStyle: Theme.of(context).textTheme.bodySmall,
             ),
           ),
         ],
@@ -54,7 +54,7 @@ Compute the stress/strain of an orthotropic lamina. The plane stress-strain rela
         children: [
           Text("""
 Calculate the engineering constant of an orthotropic lamina for different angles. The plane stress-strain relations in the material coordinate system can be expressed as:""",
-              style: Theme.of(context).textTheme.bodyText2),
+              style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(
             height: 12,
           ),
@@ -74,7 +74,7 @@ Calculate the engineering constant of an orthotropic lamina for different angles
   \sigma_{12}
 \end{Bmatrix}''',
               mathStyle: MathStyle.display,
-              textStyle: Theme.of(context).textTheme.subtitle1,
+              textStyle: Theme.of(context).textTheme.titleMedium,
             ),
           ),
         ],
@@ -88,7 +88,7 @@ Calculate the engineering constant of an orthotropic lamina for different angles
         children: [
           Text("""
 Calculate 3D properties of a laminate including effective 3D stiffness matrix, compliance matrix, and engineering constants. The 3D constitutive relations can be expressed using the effective 3D stiffness matrix as:""",
-              style: Theme.of(context).textTheme.bodyText2),
+              style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(
             height: 12,
           ),
@@ -133,7 +133,7 @@ Calculate 3D properties of a laminate including effective 3D stiffness matrix, c
         children: [
           Text("""
 Calculate the plate properties of a laminate. The constitutive relations according to the classical lamination theory is:""",
-              style: Theme.of(context).textTheme.bodyText2),
+              style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(
             height: 12,
           ),
@@ -178,7 +178,7 @@ Calculate the plate properties of a laminate. The constitutive relations accordi
         children: [
           Text("""
 Calculate the plate strains/curvatures in terms of stress resultants, or vice versa. Compute the laminar stresses and strains. The constitutive relations according to the classical lamination theory is:""",
-              style: Theme.of(context).textTheme.bodyText2),
+              style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(
             height: 12,
           ),
@@ -226,7 +226,7 @@ Calculate properties (stiffness matrix, compliance matrix, and engineering const
 1. Voigt rules of mixtures: strains are assumed to uniform.
 2. Reuss rules of mixtures: stresses are assumed to be uniform.
 3. Hybrid rules of mixtures: the axial strain is assumed to be uniform, and the stress components in other directions are assumed to be uniform.
-""", style: Theme.of(context).textTheme.bodyText2),
+""", style: Theme.of(context).textTheme.bodyMedium),
         ],
       );
     }

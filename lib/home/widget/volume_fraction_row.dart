@@ -38,7 +38,7 @@ class _VolumeFractionRowState extends State<VolumeFractionRow> {
               children: [
                 Text(
                   "Fiber Volume Fraction",
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 IconButton(
                   onPressed: () {

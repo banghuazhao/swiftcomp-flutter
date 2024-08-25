@@ -30,7 +30,7 @@ class _TransverselyIsotropicRowState extends State<TransverselyIsotropicRow> {
                 children: [
                   Text(
                     "Fiber Properties",
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   IconButton(
                     onPressed: () {

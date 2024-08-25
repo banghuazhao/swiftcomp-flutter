@@ -84,20 +84,20 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   amplify_auth_cognito: 76b5a54f05f66f69966b468b8121a0dd33a32c70
-  amplify_secure_storage: 501cbdac671a050090d48dfcc002d5637d3f4a55
-  app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
+  amplify_secure_storage: be403397a8ba39f5e0f2a05303b3ca03b53b9ee9
+  app_tracking_transparency: e169b653478da7bb15a6c61209015378ca73e375
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  fluttertoast: 31b00dabfa7fb7bacd9e7dbee580d7a2ff4bf265
+  fluttertoast: 9f2f8e81bb5ce18facb9748d7855bf5a756fe3db
   in_app_review: 318597b3a06c22bb46dc454d56828c85f444f99d
   launch_review: 75d5a956ba8eaa493e9c9d4bf4c05e505e8d5ed0
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
-  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
+  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
-  shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
+  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   Toast: ec33c32b8688982cecc6348adeae667c1b9938da
-  url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
+  url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
 
 PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
 
