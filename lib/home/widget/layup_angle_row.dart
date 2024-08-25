@@ -32,7 +32,7 @@ class _LayupAngleRowState extends State<LayupAngleRow> {
           ListTile(
             title: Text(
               "Layup Angle",
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           Padding(

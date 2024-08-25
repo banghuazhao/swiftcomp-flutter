@@ -245,7 +245,7 @@ class _LaminaEngineeringConstantsResultPageState
           children: [
             Text(
               constant,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             SizedBox(
               height: 8,
@@ -293,7 +293,7 @@ class _LaminaEngineeringConstantsResultPageState
   _getValue(double value) {
     return Consumer<NumberPrecisionHelper>(builder: (context, precs, child) {
       return Text(value.toStringAsExponential(precs.precision),
-          style: Theme.of(context).textTheme.bodyText1);
+          style: Theme.of(context).textTheme.bodySmall);
     });
   }
 
@@ -307,7 +307,7 @@ class _LaminaEngineeringConstantsResultPageState
           ListTile(
             title: Text(
               S.of(context).Layup_Angle + ": ${doubleToString(layupAngle, keepDecimal: 0)}",
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           Slider(

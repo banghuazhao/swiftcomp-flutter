@@ -63,7 +63,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                   padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                   child: Text(
                     "An email confirmation code is sent to $email. Please type the code to confirm your email.",
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleMedium,
                   )),
             if (isPasswordResetting)
               Padding(

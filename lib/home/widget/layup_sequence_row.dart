@@ -41,7 +41,7 @@ class _LayupSequenceRowState extends State<LayupSequenceRow> {
               children: [
                 Text(
                   "Layup Sequence",
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 IconButton(
                   onPressed: () {

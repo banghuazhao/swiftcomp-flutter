@@ -22,7 +22,7 @@ class ResultPlaneStiffnessMatrix extends StatelessWidget {
           ListTile(
             title: Text(
               S.of(context).Stiffness_Matrix_Q,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           StaggeredGridView.countBuilder(
@@ -42,7 +42,7 @@ class ResultPlaneStiffnessMatrix extends StatelessWidget {
                     child: Center(
                       child: Text(
                         value == 0 ? "0" : valueResult,
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ),
                   ),

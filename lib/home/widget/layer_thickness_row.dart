@@ -34,7 +34,7 @@ class _LayerThicknessPageState extends State<LayerThicknessPage> {
           ListTile(
             title: Text(
               "Layer Thickness",
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           Padding(

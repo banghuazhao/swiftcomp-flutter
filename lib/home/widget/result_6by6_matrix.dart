@@ -23,7 +23,7 @@ class Result6By6Matrix extends StatelessWidget {
           ListTile(
             title: AutoSizeText(
               title,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleMedium,
               maxLines: 1,
             ),
           ),

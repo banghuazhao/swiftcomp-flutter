@@ -71,7 +71,7 @@ class _RulesOfMixtureResultPageState extends State<RulesOfMixtureResultPage> {
                 return [
                   Text(
                     "Voigt Rules of Mixture",
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Result6By6Matrix(
                     matrix: widget.Cv,
@@ -87,7 +87,7 @@ class _RulesOfMixtureResultPageState extends State<RulesOfMixtureResultPage> {
                   ),
                   Text(
                     "Reuss Rules of Mixture",
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Result6By6Matrix(
                     matrix: widget.Cr,
@@ -103,7 +103,7 @@ class _RulesOfMixtureResultPageState extends State<RulesOfMixtureResultPage> {
                   ),
                   Text(
                     "Hybrid Rules of Mixture",
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Result6By6Matrix(
                     matrix: widget.Ch,

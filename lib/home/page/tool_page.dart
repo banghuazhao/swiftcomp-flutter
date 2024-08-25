@@ -141,7 +141,7 @@ class _ToolPageState extends State<ToolPage>
                           Expanded(
                             child: Text(
                               model.title,
-                              style: Theme.of(context).textTheme.subtitle1,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
                           const SizedBox(

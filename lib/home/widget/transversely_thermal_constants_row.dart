@@ -35,7 +35,7 @@ class _TransverselyThermalConstantsRowState extends State<TransverselyThermalCon
                 children: [
                   Text(
                     widget.title,
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   IconButton(
                     onPressed: () {
