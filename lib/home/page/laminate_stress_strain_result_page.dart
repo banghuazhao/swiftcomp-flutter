@@ -19,8 +19,8 @@ class LaminateStressStrainResultPage extends StatefulWidget {
 
   const LaminateStressStrainResultPage(
       {Key? key,
-      required this.resultTensor,
       required this.inputTensor,
+      required this.resultTensor,
       required this.thickness,
       required this.Q})
       : super(key: key);
@@ -76,7 +76,6 @@ class _LaminateStressStrainResultPageState extends State<LaminateStressStrainRes
 
       epsilon12_datas.add(FlSpot(x3Start, epsilon_e_Start[2][0]));
       epsilon12_datas.add(FlSpot(x3End, epsilon_e_End[2][0]));
-
       sigma11_datas.add(FlSpot(x3Start, sigma_e_Start[0][0]));
       sigma11_datas.add(FlSpot(x3End, sigma_e_End[0][0]));
 
@@ -274,9 +273,17 @@ class LaminarStressStrainLineChat extends StatelessWidget {
     double maxX = data.last.x;
     double minY = (data.map((e) => e.y)).reduce(min);
     double maxY = (data.map((e) => e.y)).reduce(max);
+    if (maxX == minX) {
+      maxX = minX + 1;
+    }
+    double deltaY = maxY - minY;
+    if (deltaY == 0 || ((deltaY / minY).abs() < 0.001)) {
+      maxY = minY + 1;
+    }
+
     double horizontalInterval = (maxX - minX) / 4;
     double verticalInterval = (maxY - minY) / 4;
-
+    print("minX, maxX, minY, maxY: $minX, $maxX, $minY, $maxY");
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),

@@ -30,6 +30,9 @@ class Laminate3DPropertiesPage extends StatefulWidget {
 class _Laminate3DPropertiesPageState extends State<Laminate3DPropertiesPage> {
   TransverselyIsotropicMaterial transverselyIsotropicMaterial =
       TransverselyIsotropicMaterial();
+  OrthotropicMaterial orthotropicMaterial =
+  OrthotropicMaterial();
+
   TransverselyIsotropicCTE transverselyIsotropicCTE =
       TransverselyIsotropicCTE();
   LayupSequence layupSequence = LayupSequence();
