@@ -94,7 +94,7 @@ class _RulesOfMixtureResultPageState extends State<RulesOfMixtureResultPage> {
                     title: "Effective 3D Stiffness Matrix",
                   ),
                   Result6By6Matrix(
-                    matrix: widget.Sv,
+                    matrix: widget.Sr,
                     title: "Effective 3D Compliance Matrix",
                   ),
                   OrthotropicPropertiesWidget(
@@ -110,7 +110,7 @@ class _RulesOfMixtureResultPageState extends State<RulesOfMixtureResultPage> {
                     title: "Effective 3D Stiffness Matrix",
                   ),
                   Result6By6Matrix(
-                    matrix: widget.Sv,
+                    matrix: widget.Sh,
                     title: "Effective 3D Compliance Matrix",
                   ),
                   OrthotropicPropertiesWidget(
