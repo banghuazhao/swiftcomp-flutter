@@ -1,16 +1,39 @@
-# swiftcomp
+# SwiftComp-flutter
 
-A new Flutter project.
+[![App Store](https://img.shields.io/badge/App%20Store-Download-blue.svg)](https://apps.apple.com/us/app/swiftcomp-composite-calculator/id1297825946)
+[![Google Play](https://img.shields.io/badge/Google%20Play-Download-green.svg)](https://play.google.com/store/apps/details?id=com.banghuazhao.swiftcomp&hl=en_US)
 
-## Getting Started
+SwiftComp-flutter is a mobile application designed to provide a comprehensive composite calculator based on the SwiftComp software, an efficient multiscale modeling tool for composites. The app is available on both the App Store and Google Play Store, making it accessible to a wide range of users.
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+- **Lamina Stress/Strain:** Calculate stress and strain for lamina layers.
+- **Lamina Engineering Constants:** Determine the engineering constants for individual lamina.
+- **Laminar Stress/Strain:** Analyze stress and strain across multiple lamina layers.
+- **Laminate Plate Properties:** Compute the properties of laminate plates.
+- **Laminate 3D Properties:** Evaluate the three-dimensional properties of laminate materials.
+- **UDFRC Properties:** Calculate the properties for user-defined fiber-reinforced composites (UDFRC).
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Installation
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### iOS
+Download SwiftComp-flutter from the [App Store](https://apps.apple.com/us/app/swiftcomp-composite-calculator/id1297825946).
+
+### Android
+Download SwiftComp-flutter from the [Google Play Store](https://play.google.com/store/apps/details?id=com.banghuazhao.swiftcomp&hl=en_US).
+
+## Screenshots
+
+<p align="center">
+<img src="./sreenshots/sc1.webp" alt="iOS Screenshot" width="200">
+<img src="./sreenshots/sc2.webp" alt="iOS Screenshot" width="200">
+<img src="./sreenshots/sc3.webp" alt="iOS Screenshot" width="200">
+</p>
+
+
+## Usage
+
+1. **Select a Material:** Choose from the existing material database or add a new material.
+2. **Input Parameters:** Enter the necessary parameters for your composite material.
+3. **Calculate:** Press the calculate button to obtain results.
+4. **View Results:** The app provides detailed information on the composite's properties.
