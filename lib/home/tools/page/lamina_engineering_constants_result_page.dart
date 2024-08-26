@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 import 'package:swiftcomp/generated/l10n.dart';
-import 'package:swiftcomp/home/model/material_model.dart';
-import 'package:swiftcomp/home/widget/result_plane_compliance_matrix.dart';
-import 'package:swiftcomp/home/widget/result_plane_stiffness_matrix.dart';
+import 'package:swiftcomp/home/tools/model/material_model.dart';
+import 'package:swiftcomp/home/tools/widget/result_plane_compliance_matrix.dart';
+import 'package:swiftcomp/home/tools/widget/result_plane_stiffness_matrix.dart';
 import 'package:swiftcomp/more/tool_setting_page.dart';
 import 'package:swiftcomp/util/NumberPrecisionHelper.dart';
 import 'package:swiftcomp/util/number.dart';
 import 'package:vector_math/vector_math.dart' as VMath;
 
-import '../model/thermal_model.dart';
+import '../../tools/model/thermal_model.dart';
 
 class LaminaEngineeringConstantsResultPage extends StatefulWidget {
   final TransverselyIsotropicMaterial transverselyIsotropicMaterial;

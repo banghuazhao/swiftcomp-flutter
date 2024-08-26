@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:linalg/matrix.dart';
 import 'package:swiftcomp/generated/l10n.dart';
-import 'package:swiftcomp/home/model/material_model.dart';
-import 'package:swiftcomp/home/model/volume_fraction_model.dart';
-import 'package:swiftcomp/home/page/UDFRC_rules_of_mixture_result_page.dart';
-import 'package:swiftcomp/home/tools/DescriptionModels.dart';
-import 'package:swiftcomp/home/widget/description.dart';
-import 'package:swiftcomp/home/widget/isotropic_material_row.dart';
-import 'package:swiftcomp/home/widget/isotropic_thermal_constants_row.dart';
-import 'package:swiftcomp/home/widget/transversely_isotropic_row.dart';
-import 'package:swiftcomp/home/widget/volume_fraction_row.dart';
+import 'package:swiftcomp/home/tools/model/material_model.dart';
+import 'package:swiftcomp/home/tools/model/volume_fraction_model.dart';
+import 'package:swiftcomp/home/tools/page/UDFRC_rules_of_mixture_result_page.dart';
+import 'package:swiftcomp/home/tools/model/DescriptionModels.dart';
+import 'package:swiftcomp/home/tools/widget/description.dart';
+import 'package:swiftcomp/home/tools/widget/isotropic_material_row.dart';
+import 'package:swiftcomp/home/tools/widget/isotropic_thermal_constants_row.dart';
+import 'package:swiftcomp/home/tools/widget/transversely_isotropic_row.dart';
+import 'package:swiftcomp/home/tools/widget/volume_fraction_row.dart';
 
-import '../model/thermal_model.dart';
-import '../widget/analysis_type_row.dart';
+import '../../tools/model/thermal_model.dart';
+import '../../tools/widget/analysis_type_row.dart';
 import '../widget/transversely_thermal_constants_row.dart';
 
 class RulesOfMixturePage extends StatefulWidget {

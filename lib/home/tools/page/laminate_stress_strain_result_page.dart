@@ -7,7 +7,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:linalg/matrix.dart';
 import 'package:provider/provider.dart';
 import 'package:swiftcomp/generated/l10n.dart';
-import 'package:swiftcomp/home/model/mechanical_tensor_model.dart';
+import 'package:swiftcomp/home/tools/model/mechanical_tensor_model.dart';
 import 'package:swiftcomp/more/tool_setting_page.dart';
 import 'package:swiftcomp/util/NumberPrecisionHelper.dart';
 

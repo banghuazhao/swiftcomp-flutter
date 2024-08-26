@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:swiftcomp/home/model/volume_fraction_model.dart';
-import 'package:swiftcomp/home/tools/explain.dart';
+import 'package:swiftcomp/home/tools/model/volume_fraction_model.dart';
+import 'package:swiftcomp/home/tools/model/explain.dart';
 
 class VolumeFractionRow extends StatefulWidget {
   final VolumeFraction volumeFraction;

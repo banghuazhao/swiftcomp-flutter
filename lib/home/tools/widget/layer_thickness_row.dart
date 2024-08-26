@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:swiftcomp/home/model/layer_thickness.dart';
+import 'package:swiftcomp/home/tools/model/layer_thickness.dart';
 
 class LayerThicknessPage extends StatefulWidget {
   final LayerThickness layerThickness;

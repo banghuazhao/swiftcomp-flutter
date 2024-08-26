@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:linalg/matrix.dart';
 import 'package:swiftcomp/generated/l10n.dart';
-import 'package:swiftcomp/home/model/material_model.dart';
-import 'package:swiftcomp/home/widget/orthotropic_properties_widget.dart';
-import 'package:swiftcomp/home/widget/result_6by6_matrix.dart';
+import 'package:swiftcomp/home/tools/model/material_model.dart';
+import 'package:swiftcomp/home/tools/widget/orthotropic_properties_widget.dart';
+import 'package:swiftcomp/home/tools/widget/result_6by6_matrix.dart';
 import 'package:swiftcomp/more/tool_setting_page.dart';
 
 class RulesOfMixtureResultPage extends StatefulWidget {

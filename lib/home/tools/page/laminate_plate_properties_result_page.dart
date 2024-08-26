@@ -5,8 +5,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:linalg/matrix.dart';
 import 'package:provider/provider.dart';
 import 'package:swiftcomp/generated/l10n.dart';
-import 'package:swiftcomp/home/model/in_plane_properties_model.dart';
-import 'package:swiftcomp/home/widget/result_3by3_matrix.dart';
+import 'package:swiftcomp/home/tools/model/in_plane_properties_model.dart';
+import 'package:swiftcomp/home/tools/widget/result_3by3_matrix.dart';
 import 'package:swiftcomp/more/tool_setting_page.dart';
 import 'package:swiftcomp/util/NumberPrecisionHelper.dart';
 

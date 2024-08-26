@@ -4,21 +4,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:swiftcomp/generated/l10n.dart';
-import 'package:swiftcomp/home/model/angle_model.dart';
-import 'package:swiftcomp/home/model/delta_t.dart';
-import 'package:swiftcomp/home/model/material_model.dart';
-import 'package:swiftcomp/home/model/mechanical_tensor_model.dart';
-import 'package:swiftcomp/home/model/thermal_model.dart';
-import 'package:swiftcomp/home/page/lamina_stress_strain_result_page.dart';
-import 'package:swiftcomp/home/tools/DescriptionModels.dart';
-import 'package:swiftcomp/home/widget/analysis_type_row.dart';
-import 'package:swiftcomp/home/widget/description.dart';
-import 'package:swiftcomp/home/widget/lamina_constants_row.dart';
-import 'package:swiftcomp/home/widget/layup_angle_row.dart';
-import 'package:swiftcomp/home/widget/plane_stress_strain_row.dart';
+import 'package:swiftcomp/home/tools/model/angle_model.dart';
+import 'package:swiftcomp/home/tools/model/delta_t.dart';
+import 'package:swiftcomp/home/tools/model/material_model.dart';
+import 'package:swiftcomp/home/tools/model/mechanical_tensor_model.dart';
+import 'package:swiftcomp/home/tools/model/thermal_model.dart';
+import 'package:swiftcomp/home/tools/page/lamina_stress_strain_result_page.dart';
+import 'package:swiftcomp/home/tools/model/DescriptionModels.dart';
+import 'package:swiftcomp/home/tools/widget/analysis_type_row.dart';
+import 'package:swiftcomp/home/tools/widget/description.dart';
+import 'package:swiftcomp/home/tools/widget/lamina_constants_row.dart';
+import 'package:swiftcomp/home/tools/widget/layup_angle_row.dart';
+import 'package:swiftcomp/home/tools/widget/plane_stress_strain_row.dart';
 import 'package:vector_math/vector_math.dart' as VMath;
 
-import '../widget/delta_temperature_row.dart';
+import '../../tools/widget/delta_temperature_row.dart';
 import '../widget/transversely_thermal_constants_row.dart';
 
 class LaminaStressStrainPage extends StatefulWidget {

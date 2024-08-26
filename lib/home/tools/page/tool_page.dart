@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:swiftcomp/generated/l10n.dart';
-import 'package:swiftcomp/home/model/tool_model.dart';
-import 'package:swiftcomp/home/page/UDFRC_rules_of_mixture_page.dart';
-import 'package:swiftcomp/home/page/lamina_stress_strain_page.dart';
-import 'package:swiftcomp/home/tools/DescriptionModels.dart';
+import 'package:swiftcomp/home/tools/model/tool_model.dart';
+import 'package:swiftcomp/home/tools/page/UDFRC_rules_of_mixture_page.dart';
+import 'package:swiftcomp/home/tools/page/lamina_stress_strain_page.dart';
+import 'package:swiftcomp/home/tools/model/DescriptionModels.dart';
 import 'package:swiftcomp/more/more_page.dart';
 
 import 'lamina_engineering_constants_page.dart';
@@ -91,18 +91,7 @@ class _ToolPageState extends State<ToolPage>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("SwiftComp"),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    CupertinoPageRoute(builder: (context) => MorePage()));
-              },
-              icon: Icon(
-                Icons.more_horiz_rounded,
-              ),
-            )
-          ],
+          title: const Text("Tools")
         ),
         body: SafeArea(
             child: StaggeredGridView.countBuilder(

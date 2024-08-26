@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:linalg/linalg.dart';
 import 'package:swiftcomp/generated/l10n.dart';
-import 'package:swiftcomp/home/model/layer_thickness.dart';
-import 'package:swiftcomp/home/model/layup_sequence_model.dart';
-import 'package:swiftcomp/home/model/material_model.dart';
-import 'package:swiftcomp/home/tools/DescriptionModels.dart';
-import 'package:swiftcomp/home/widget/analysis_type_row.dart';
-import 'package:swiftcomp/home/widget/description.dart';
-import 'package:swiftcomp/home/widget/lamina_constants_row.dart';
-import 'package:swiftcomp/home/widget/layer_thickness_row.dart';
-import 'package:swiftcomp/home/widget/layup_sequence_row.dart';
-import 'package:swiftcomp/home/widget/transversely_thermal_constants_row.dart';
+import 'package:swiftcomp/home/tools/model/layer_thickness.dart';
+import 'package:swiftcomp/home/tools/model/layup_sequence_model.dart';
+import 'package:swiftcomp/home/tools/model/material_model.dart';
+import 'package:swiftcomp/home/tools/model/DescriptionModels.dart';
+import 'package:swiftcomp/home/tools/widget/analysis_type_row.dart';
+import 'package:swiftcomp/home/tools/widget/description.dart';
+import 'package:swiftcomp/home/tools/widget/lamina_constants_row.dart';
+import 'package:swiftcomp/home/tools/widget/layer_thickness_row.dart';
+import 'package:swiftcomp/home/tools/widget/layup_sequence_row.dart';
+import 'package:swiftcomp/home/tools/widget/transversely_thermal_constants_row.dart';
 
-import '../model/thermal_model.dart';
+import '../../tools/model/thermal_model.dart';
 import 'laminate_3d_properties_result_page.dart';
 
 class Laminate3DPropertiesPage extends StatefulWidget {

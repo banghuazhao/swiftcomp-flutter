@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:swiftcomp/generated/l10n.dart';
-import 'package:swiftcomp/home/model/material_model.dart';
-import 'package:swiftcomp/home/page/lamina_engineering_constants_result_page.dart';
-import 'package:swiftcomp/home/tools/DescriptionModels.dart';
-import 'package:swiftcomp/home/widget/analysis_type_row.dart';
-import 'package:swiftcomp/home/widget/description.dart';
-import 'package:swiftcomp/home/widget/lamina_constants_row.dart';
+import 'package:swiftcomp/home/tools/model/material_model.dart';
+import 'package:swiftcomp/home/tools/page/lamina_engineering_constants_result_page.dart';
+import 'package:swiftcomp/home/tools/model/DescriptionModels.dart';
+import 'package:swiftcomp/home/tools/widget/analysis_type_row.dart';
+import 'package:swiftcomp/home/tools/widget/description.dart';
+import 'package:swiftcomp/home/tools/widget/lamina_constants_row.dart';
 
-import '../model/thermal_model.dart';
+import '../../tools/model/thermal_model.dart';
 import '../widget/transversely_thermal_constants_row.dart';
 
 class LaminaEngineeringConstantsPage extends StatefulWidget {

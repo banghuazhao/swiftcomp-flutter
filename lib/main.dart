@@ -11,7 +11,8 @@ import 'package:swiftcomp/util/others.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 import 'amplifyconfiguration.dart';
-import 'home/page/tool_page.dart';
+import 'home/bottom_navigator.dart';
+import 'home/tools/page/tool_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -101,7 +102,7 @@ class _MyAppState extends State<MyApp> {
             scaffoldBackgroundColor: const Color.fromRGBO(239, 239, 244, 1),
             textTheme: const TextTheme(),
           ),
-          home: const ToolPage(),
+          home: const BottomNavigator(),
         ));
   }
 }

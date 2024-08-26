@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:swiftcomp/home/tools/explain.dart';
-import 'package:swiftcomp/home/tools/validate.dart';
+import 'package:swiftcomp/home/tools/model/explain.dart';
+import 'package:swiftcomp/home/tools/model/validate.dart';
 
-import '../model/thermal_model.dart';
+import '../../tools/model/thermal_model.dart';
 
 class IsotropicThermalConstantsRow extends StatefulWidget {
   final IsotropicCTE material;

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:swiftcomp/home/model/material_model.dart';
-import 'package:swiftcomp/home/tools/explain.dart';
-import 'package:swiftcomp/home/tools/validate.dart';
+import 'package:swiftcomp/home/tools/model/material_model.dart';
+import 'package:swiftcomp/home/tools/model/explain.dart';
+import 'package:swiftcomp/home/tools/model/validate.dart';
 
 class TransverselyIsotropicRow extends StatefulWidget {
   final TransverselyIsotropicMaterial material;
