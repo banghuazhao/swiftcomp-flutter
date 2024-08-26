@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:swiftcomp/home/page/tool_page.dart';
+import 'package:swiftcomp/home/tools/page/tool_page.dart';
 
-import 'more/more_page.dart';
+import '../more/more_page.dart';
 
 class BottomNavigator extends StatefulWidget {
   const BottomNavigator({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:swiftcomp/home/model/material_model.dart';
+import 'package:swiftcomp/home/tools/model/material_model.dart';
 import 'package:swiftcomp/util/NumberPrecisionHelper.dart';
 
 class OrthotropicPropertiesWidget extends StatelessWidget {

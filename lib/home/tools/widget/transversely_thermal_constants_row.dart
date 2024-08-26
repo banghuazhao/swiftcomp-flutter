@@ -1,24 +1,26 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:swiftcomp/generated/l10n.dart';
-import 'package:swiftcomp/home/model/material_model.dart';
-import 'package:swiftcomp/home/tools/explain.dart';
-import 'package:swiftcomp/home/tools/validate.dart';
+import 'package:swiftcomp/home/tools/model/explain.dart';
+import 'package:swiftcomp/home/tools/model/validate.dart';
 
-class LaminaContantsRow extends StatefulWidget {
-  final TransverselyIsotropicMaterial material;
+import '../../tools/model/thermal_model.dart';
+
+class TransverselyThermalConstantsRow extends StatefulWidget {
+  final TransverselyIsotropicCTE material;
+  final String title;
+  final bool shouldConsider12;
   final bool validate;
-  final bool isPlaneStress;
 
-  const LaminaContantsRow(
-      {Key? key, required this.material, required this.validate, required this.isPlaneStress})
+  const TransverselyThermalConstantsRow({Key? key, required this.material, this.title = "CTEs", this.shouldConsider12 = true, required this.validate})
       : super(key: key);
 
   @override
-  _LaminaContantsRowState createState() => _LaminaContantsRowState();
+  _TransverselyThermalConstantsRowState createState() => _TransverselyThermalConstantsRowState();
 }
 
-class _LaminaContantsRowState extends State<LaminaContantsRow> {
+class _TransverselyThermalConstantsRowState extends State<TransverselyThermalConstantsRow> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -32,7 +34,7 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
               title: Row(
                 children: [
                   Text(
-                    S.of(context).Lamina_Constants,
+                    widget.title,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   IconButton(
@@ -69,11 +71,12 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                               isDense: true,
                               contentPadding: const EdgeInsets.all(12),
                               border: const OutlineInputBorder(),
-                              labelText: "E1",
-                              errorText:
-                                  widget.validate ? validateModulus(widget.material.e1) : null),
+                              labelText: "ɑ11",
+                              errorText: widget.validate
+                                  ? validateModulus(widget.material.alpha11)
+                                  : null),
                           onChanged: (value) {
-                            widget.material.e1 = double.tryParse(value);
+                            widget.material.alpha11 = double.tryParse(value);
                           },
                         ),
                       ),
@@ -85,18 +88,20 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                               isDense: true,
                               contentPadding: const EdgeInsets.all(12),
                               border: const OutlineInputBorder(),
-                              labelText: "E2",
-                              errorText:
-                                  widget.validate ? validateModulus(widget.material.e2) : null),
+                              labelText: "ɑ22",
+                              errorText: widget.validate
+                                  ? validateModulus(widget.material.alpha22)
+                                  : null),
                           onChanged: (value) {
-                            widget.material.e2 = double.tryParse(value);
+                            widget.material.alpha22 = double.tryParse(value);
                           },
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Row(
+                  if (widget.shouldConsider12)
+                    Row(
                     children: [
                       Expanded(
                         child: TextField(
@@ -105,60 +110,21 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                               isDense: true,
                               contentPadding: const EdgeInsets.all(12),
                               border: const OutlineInputBorder(),
-                              labelText: "G12",
-                              errorText:
-                                  widget.validate ? validateModulus(widget.material.g12) : null),
+                              labelText: "ɑ12",
+                              errorText: widget.validate
+                                  ? validateModulus(widget.material.alpha12)
+                                  : null),
                           onChanged: (value) {
-                            widget.material.g12 = double.tryParse(value);
+                            widget.material.alpha12 = double.tryParse(value);
                           },
                         ),
                       ),
                       const SizedBox(width: 12),
-                      Expanded(
-                        child: TextField(
-                          keyboardType:
-                              const TextInputType.numberWithOptions(decimal: true, signed: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "ν12",
-                              errorText: widget.validate
-                                  ? validatePoissonRatio(widget.material.nu12)
-                                  : null),
-                          onChanged: (value) {
-                            widget.material.nu12 = double.tryParse(value);
-                          },
-                        ),
-                      ),
+                      Expanded(child: Container()),
                     ],
                   ),
-                  widget.isPlaneStress ? Container() : const SizedBox(height: 12),
-                  widget.isPlaneStress
-                      ? Container()
-                      : Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                                decoration: InputDecoration(
-                                    isDense: true,
-                                    contentPadding: const EdgeInsets.all(12),
-                                    border: const OutlineInputBorder(),
-                                    labelText: "ν23",
-                                    errorText: widget.validate
-                                        ? validatePoissonRatio(widget.material.nu23)
-                                        : null),
-                                onChanged: (value) {
-                                  widget.material.nu23 = double.tryParse(value);
-                                },
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(child: Container()),
-                          ],
-                        ),
-                  const SizedBox(height: 20),
+                  if (widget.shouldConsider12)
+                    const SizedBox(height: 12)
                 ],
               ),
             ),

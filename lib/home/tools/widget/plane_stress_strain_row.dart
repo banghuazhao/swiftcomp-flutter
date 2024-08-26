@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:swiftcomp/home/model/mechanical_tensor_model.dart';
+import 'package:swiftcomp/home/tools/model/mechanical_tensor_model.dart';
 
 class PlaneStressStrainRow extends StatefulWidget {
   final MechanicalTensor mechanicalTensor;

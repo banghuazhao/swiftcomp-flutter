@@ -1,26 +1,23 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:swiftcomp/home/tools/explain.dart';
-import 'package:swiftcomp/home/tools/validate.dart';
+import 'package:swiftcomp/home/tools/model/material_model.dart';
+import 'package:swiftcomp/home/tools/model/explain.dart';
+import 'package:swiftcomp/home/tools/model/validate.dart';
 
-import '../model/thermal_model.dart';
-
-class TransverselyThermalConstantsRow extends StatefulWidget {
-  final TransverselyIsotropicCTE material;
+class IsotropicMaterialRow extends StatefulWidget {
   final String title;
-  final bool shouldConsider12;
+  final IsotropicMaterial material;
   final bool validate;
 
-  const TransverselyThermalConstantsRow({Key? key, required this.material, this.title = "CTEs", this.shouldConsider12 = true, required this.validate})
+  const IsotropicMaterialRow(
+      {Key? key, required this.title, required this.material, required this.validate})
       : super(key: key);
 
   @override
-  _TransverselyThermalConstantsRowState createState() => _TransverselyThermalConstantsRowState();
+  _IsotropicMaterialRowState createState() => _IsotropicMaterialRowState();
 }
 
-class _TransverselyThermalConstantsRowState extends State<TransverselyThermalConstantsRow> {
+class _IsotropicMaterialRowState extends State<IsotropicMaterialRow> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -71,60 +68,35 @@ class _TransverselyThermalConstantsRowState extends State<TransverselyThermalCon
                               isDense: true,
                               contentPadding: const EdgeInsets.all(12),
                               border: const OutlineInputBorder(),
-                              labelText: "ɑ11",
-                              errorText: widget.validate
-                                  ? validateModulus(widget.material.alpha11)
-                                  : null),
+                              labelText: "E1",
+                              errorText:
+                                  widget.validate ? validateModulus(widget.material.e) : null),
                           onChanged: (value) {
-                            widget.material.alpha11 = double.tryParse(value);
+                            widget.material.e = double.tryParse(value);
                           },
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: TextField(
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          keyboardType:
+                              const TextInputType.numberWithOptions(decimal: true, signed: true),
                           decoration: InputDecoration(
                               isDense: true,
                               contentPadding: const EdgeInsets.all(12),
                               border: const OutlineInputBorder(),
-                              labelText: "ɑ22",
+                              labelText: "ν",
                               errorText: widget.validate
-                                  ? validateModulus(widget.material.alpha22)
+                                  ? validateIsotropicPoissonRatio(widget.material.nu)
                                   : null),
                           onChanged: (value) {
-                            widget.material.alpha22 = double.tryParse(value);
+                            widget.material.nu = double.tryParse(value);
                           },
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  if (widget.shouldConsider12)
-                    Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "ɑ12",
-                              errorText: widget.validate
-                                  ? validateModulus(widget.material.alpha12)
-                                  : null),
-                          onChanged: (value) {
-                            widget.material.alpha12 = double.tryParse(value);
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(child: Container()),
-                    ],
-                  ),
-                  if (widget.shouldConsider12)
-                    const SizedBox(height: 12)
+                  const SizedBox(height: 20),
                 ],
               ),
             ),

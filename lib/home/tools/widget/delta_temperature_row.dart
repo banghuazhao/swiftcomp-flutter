@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:swiftcomp/home/model/angle_model.dart';
+import 'package:swiftcomp/home/tools/model/delta_t.dart';
 
-class LayupAngleRow extends StatefulWidget {
-  final LayupAngle layupAngle;
+class DeltaTemperatureRow extends StatefulWidget {
+  final DeltaTemperature deltaTemperature;
   final bool validate;
 
-  const LayupAngleRow({Key? key, required this.layupAngle, required this.validate})
+  const DeltaTemperatureRow({Key? key, required this.deltaTemperature, required this.validate})
       : super(key: key);
 
   @override
-  _LayupAngleRowState createState() => _LayupAngleRowState();
+  _DeltaTemperatureRowState createState() => _DeltaTemperatureRowState();
 }
 
-class _LayupAngleRowState extends State<LayupAngleRow> {
+class _DeltaTemperatureRowState extends State<DeltaTemperatureRow> {
   validateLayupAngle(double? value) {
     if (value == null) {
       return "Not a number";
@@ -31,7 +31,7 @@ class _LayupAngleRowState extends State<LayupAngleRow> {
         children: [
           ListTile(
             title: Text(
-              "Layup Angle",
+              "ΔT",
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
@@ -43,10 +43,11 @@ class _LayupAngleRowState extends State<LayupAngleRow> {
                   isDense: true,
                   contentPadding: EdgeInsets.all(12),
                   border: OutlineInputBorder(),
-                  labelText: "(-90 <= Angle <= 90)",
-                  errorText: widget.validate ? validateLayupAngle(widget.layupAngle.value) : null),
+                  labelText: "ΔT",
+                  errorText:
+                      widget.validate ? validateLayupAngle(widget.deltaTemperature.value) : null),
               onChanged: (value) {
-                widget.layupAngle.value = double.tryParse(value);
+                widget.deltaTemperature.value = double.tryParse(value);
               },
             ),
           )

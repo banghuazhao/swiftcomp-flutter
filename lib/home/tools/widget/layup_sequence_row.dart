@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:swiftcomp/home/model/layup_sequence_model.dart';
-import 'package:swiftcomp/home/tools/explain.dart';
+import 'package:swiftcomp/home/tools/model/layup_sequence_model.dart';
+import 'package:swiftcomp/home/tools/model/explain.dart';
 
 class LayupSequenceRow extends StatefulWidget {
   final LayupSequence layupSequence;
