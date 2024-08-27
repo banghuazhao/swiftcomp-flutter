@@ -5,13 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:swiftcomp/generated/l10n.dart';
+import 'package:swiftcomp/home/more/feature_flag_provider.dart';
 import 'package:swiftcomp/util/NumberPrecisionHelper.dart';
 import 'package:swiftcomp/util/in_app_reviewer_helper.dart';
 import 'package:swiftcomp/util/others.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 import 'amplifyconfiguration.dart';
-import 'home/page/tool_page.dart';
+import 'home/bottom_navigator.dart';
+import 'home/tools/page/tool_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,7 +59,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [ChangeNotifierProvider(create: (context) => NumberPrecisionHelper())],
+        providers: [
+          ChangeNotifierProvider(create: (context) => NumberPrecisionHelper()),
+          ChangeNotifierProvider(create: (context) => FeatureFlagProvider())
+        ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           localizationsDelegates: [
@@ -101,7 +106,7 @@ class _MyAppState extends State<MyApp> {
             scaffoldBackgroundColor: const Color.fromRGBO(239, 239, 244, 1),
             textTheme: const TextTheme(),
           ),
-          home: const ToolPage(),
+          home: const BottomNavigator(),
         ));
   }
 }
