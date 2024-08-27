@@ -6,7 +6,7 @@ import 'package:swiftcomp/home/tools/model/tool_model.dart';
 import 'package:swiftcomp/home/tools/page/UDFRC_rules_of_mixture_page.dart';
 import 'package:swiftcomp/home/tools/page/lamina_stress_strain_page.dart';
 import 'package:swiftcomp/home/tools/model/DescriptionModels.dart';
-import 'package:swiftcomp/more/more_page.dart';
+import 'package:swiftcomp/home/more/more_page.dart';
 
 import 'lamina_engineering_constants_page.dart';
 import 'laminate_3d_properties_page.dart';
