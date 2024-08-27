@@ -3,7 +3,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:swiftcomp/more/registration_page.dart';
+import 'package:swiftcomp/home/more/registration_page.dart';
 import 'package:swiftcomp/util/string_util.dart';
 
 import 'email_confimation_screen.dart';
