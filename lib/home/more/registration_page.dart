@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:swiftcomp/util/string_util.dart';
 
-import 'email_confimation_screen.dart';
+import 'login/email_confimation_screen.dart';
 import 'login_button.dart';
 import 'login_input.dart';
 
