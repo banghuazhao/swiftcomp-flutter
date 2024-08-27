@@ -11,9 +11,11 @@ import 'package:launch_review/launch_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share/share.dart';
 import 'package:swiftcomp/generated/l10n.dart';
-import 'package:swiftcomp/home/more/login_page.dart';
+import 'package:swiftcomp/home/more/login/login_page.dart';
 import 'package:swiftcomp/home/more/tool_setting_page.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'feature_flag_page.dart';
 
 class MorePage extends StatefulWidget {
   const MorePage({Key? key}) : super(key: key);
@@ -26,6 +28,14 @@ class _MorePageState extends State<MorePage>
     with AutomaticKeepAliveClientMixin {
   bool isSignedIn = false;
   String _version = '';
+
+  int _tapCount = 0;
+  final int _maxTaps = 5;
+  final int _tapTimeout = 1000; // Timeout in milliseconds
+  DateTime _lastTapTime = DateTime.now();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -287,15 +297,37 @@ class _MorePageState extends State<MorePage>
                               );
                             },
                           ),
-                        Container(
+                        GestureDetector(
+                          onTap: _handleTap,
+                          child: Container(
                             margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-                            child: Text("Version $_version"))
+                            child: Text("Version $_version"),
+                          ),
+                        ),
                       ],
                     ))));
   }
 
-  @override
-  bool get wantKeepAlive => true;
+  void _handleTap() {
+    final now = DateTime.now();
+    if (now.difference(_lastTapTime).inMilliseconds > _tapTimeout) {
+      _tapCount = 0; // Reset tap count if taps are not continuous
+    }
+    _tapCount++;
+    _lastTapTime = now;
+
+    if (_tapCount == _maxTaps) {
+      _tapCount = 0; // Reset tap count after navigating
+      _navigateToFeatureFlagPage();
+    }
+  }
+
+  void _navigateToFeatureFlagPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => FeatureFlagPage()),
+    );
+  }
 }
 
 class MoreRow extends StatelessWidget {

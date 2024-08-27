@@ -8,8 +8,8 @@ import 'package:swiftcomp/util/string_util.dart';
 
 import 'email_confimation_screen.dart';
 import 'forget_password_page.dart';
-import 'login_button.dart';
-import 'login_input.dart';
+import '../login_button.dart';
+import '../login_input.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

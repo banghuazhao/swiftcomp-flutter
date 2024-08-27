@@ -3,7 +3,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'login_button.dart';
+import '../login_button.dart';
 
 class EmailConfirmationScreen extends StatelessWidget {
   final String email;
