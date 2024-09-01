@@ -1,5 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'chat_service.dart';
+import 'chat_session.dart';
+import 'chat_session_manager.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -8,16 +13,202 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage>
-    with SingleTickerProviderStateMixin {
+class _ChatPageState extends State<ChatPage> {
+  final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Add a new session if there are no sessions
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final chatSessionManager =
+          Provider.of<ChatSessionManager>(context, listen: false);
+      if (chatSessionManager.sessions.isEmpty) {
+        final newSession = ChatSession(
+          id: UniqueKey().toString(),
+          title: 'Session 1',
+        );
+        chatSessionManager.addSession(newSession);
+        chatSessionManager.selectSession(newSession);
+      }
+    });
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Chat"),
+      appBar: AppBar(title: const Text("Chat")),
+      drawer: Drawer(
+        child: Consumer<ChatSessionManager>(
+          builder: (context, chatSessionManager, child) {
+            return ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(51, 66, 78, 1),
+                  ),
+                  child: Text(
+                    'Chat Sessions',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+                ...chatSessionManager.sessions.map((session) {
+                  return ListTile(
+                    leading: Icon(Icons.chat),
+                    title: Text(session.title),
+                    onTap: () {
+                      chatSessionManager
+                          .selectSession(session); // Select the tapped session
+                      Navigator.pop(context); // Close the drawer
+                    },
+                  );
+                }).toList(),
+                ListTile(
+                  leading: Icon(Icons.add),
+                  title: Text('New Session'),
+                  onTap: () {
+                    final newSession = ChatSession(
+                      id: UniqueKey().toString(),
+                      title:
+                          'Session ${chatSessionManager.sessions.length + 1}',
+                    );
+                    chatSessionManager.addSession(newSession);
+                    chatSessionManager.selectSession(newSession);
+                    Navigator.pop(context); // Close the drawer
+                  },
+                ),
+              ],
+            );
+          },
         ),
-        body: Center(
-          child: Text("Chat with composite AI expert is under development"),
-        ));
+      ),
+      body: Consumer<ChatSessionManager>(
+        builder: (context, chatSessionManager, child) {
+          final session = chatSessionManager.selectedSession;
+
+          if (session == null) {
+            return Center(child: Text('No session selected.'));
+          }
+
+          return Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: session.messages.length,
+                  itemBuilder: (context, index) {
+                    final message = session.messages[index];
+                    final isUserMessage = message['role'] == 'user';
+
+                    if (isUserMessage) {
+                      return Align(
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical: 5.0, horizontal: 10.0),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 15.0),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: Text(
+                            message['content'] ?? '',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return ListTile(
+                        title: Text(
+                          message['content'] ?? '',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        leading: Icon(Icons.person) /**/,
+                      );
+                    }
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                        decoration: InputDecoration(
+                          hintText: 'Ask a question...',
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.send),
+                      onPressed: () async {
+                        if (_controller.text.isNotEmpty) {
+                          final chatService = ChatService();
+
+                          chatSessionManager.addMessageToSession(
+                            session.id,
+                            'user',
+                            _controller.text,
+                          );
+
+                          _scrollToBottom();
+
+                          final response =
+                              await chatService.sendMessage(_controller.text);
+
+                          chatSessionManager.addMessageToSession(
+                            session.id,
+                            'assistant',
+                            response,
+                          );
+
+                          _scrollToBottom();
+
+                          _controller.clear();
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 }
