@@ -14,6 +14,11 @@ SwiftComp-flutter is a mobile application designed to provide a comprehensive co
 - **Laminate 3D Properties:** Evaluate the three-dimensional properties of laminate materials.
 - **UDFRC Properties:** Calculate the properties for user-defined fiber-reinforced composites (UDFRC).
 
+## Requirements
+
+- Dart: >=3.3.0 <4.0.0
+- Flutter: >=3.19.0
+
 ## Installation
 
 ### iOS
