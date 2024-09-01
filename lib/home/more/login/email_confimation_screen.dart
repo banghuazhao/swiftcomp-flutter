@@ -2,8 +2,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import '../login_button.dart';
+import 'package:swiftcomp/home/more/login/login_button.dart';
 
 class EmailConfirmationScreen extends StatelessWidget {
   final String email;

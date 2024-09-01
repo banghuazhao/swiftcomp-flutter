@@ -65,3 +65,8 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+ios/*.ipa
+ios/*.zip
+ios/fastlane/*p8
+ios/fastlane/.env
