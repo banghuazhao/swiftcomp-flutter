@@ -12,6 +12,8 @@ import 'package:swiftcomp/util/others.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 import 'amplifyconfiguration.dart';
+import 'home/Chat/chat_session.dart';
+import 'home/Chat/chat_session_manager.dart';
 import 'home/bottom_navigator.dart';
 import 'home/tools/page/tool_page.dart';
 
@@ -61,7 +63,8 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => NumberPrecisionHelper()),
-          ChangeNotifierProvider(create: (context) => FeatureFlagProvider())
+          ChangeNotifierProvider(create: (context) => FeatureFlagProvider()),
+          ChangeNotifierProvider(create: (context) => ChatSessionManager())
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
