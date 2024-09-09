@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:swiftcomp/home/Chat/chat_session.dart';
 import 'dart:convert';
 import 'chat_config.dart';
 
@@ -7,7 +8,7 @@ class ChatService {
   final String _apiKey = ChatConfig.apiKey;
   final String _apiUrl = 'https://api.openai.com/v1/chat/completions';
 
-  Future<String> sendMessage(String message) async {
+  Future<String> sendMessage(ChatSession chatSession) async {
     final response = await http.post(
       Uri.parse(_apiUrl),
       headers: {
@@ -16,19 +17,17 @@ class ChatService {
       },
       body: jsonEncode({
         "model": "gpt-4o",
-        'messages': [
-          {
-            'role': 'user',
-            'content': message,
-          }
-        ]
+        'messages': chatSession.messages
       }),
     );
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      print(data);
-      return data['choices'][0]['message']['content'].trim();
+      print(response.body);
+      final utf8DecodedBody = utf8.decode(response.bodyBytes);
+      final data = jsonDecode(utf8DecodedBody);
+      final message = data['choices'][0]['message']['content'];
+      print(message);
+      return message;
     } else {
       print(response.statusCode);
       print(response.body);
