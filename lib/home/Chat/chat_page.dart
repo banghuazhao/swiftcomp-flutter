@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 
 import 'chat_service.dart';
 import 'chat_session.dart';
 import 'chat_session_manager.dart';
+import 'markdown_with_math.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -16,6 +18,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -147,16 +150,14 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                       );
                     } else {
-                      return ListTile(
-                        title: Text(
-                          message['content'] ?? '',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                        leading: Icon(Icons.person) /**/,
-                      );
+                      return Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                              padding: EdgeInsets.fromLTRB(15.0, 10, 15, 10),
+                              child: MarkdownWithMath(
+                                  markdownData: message['content'] ?? ''
+                              )
+                          ));
                     }
                   },
                 ),
@@ -173,35 +174,47 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                       ),
                     ),
-                    IconButton(
-                      icon: Icon(Icons.send),
-                      onPressed: () async {
-                        if (_controller.text.isNotEmpty) {
-                          final chatService = ChatService();
+                    _isLoading
+                        ? CircularProgressIndicator() // Show loading indicator
+                        : IconButton(
+                            icon: Icon(Icons.send),
+                            onPressed: () async {
+                              if (_controller.text.isNotEmpty) {
+                                setState(() {
+                                  _isLoading = true; // Start loading
+                                });
 
-                          chatSessionManager.addMessageToSession(
-                            session.id,
-                            'user',
-                            _controller.text,
-                          );
+                                final chatService = ChatService();
 
-                          _scrollToBottom();
+                                chatSessionManager.addMessageToSession(
+                                  session.id,
+                                  'user',
+                                  _controller.text,
+                                );
 
-                          final response =
-                              await chatService.sendMessage(_controller.text);
+                                _controller.clear();
 
-                          chatSessionManager.addMessageToSession(
-                            session.id,
-                            'assistant',
-                            response,
-                          );
+                                _scrollToBottom();
 
-                          _scrollToBottom();
+                                try {
+                                  final response =
+                                      await chatService.sendMessage(session);
 
-                          _controller.clear();
-                        }
-                      },
-                    ),
+                                  chatSessionManager.addMessageToSession(
+                                    session.id,
+                                    'assistant',
+                                    response,
+                                  );
+
+                                  _scrollToBottom();
+                                } finally {
+                                  setState(() {
+                                    _isLoading = false; // Stop loading
+                                  });
+                                }
+                              }
+                            },
+                          ),
                   ],
                 ),
               ),
