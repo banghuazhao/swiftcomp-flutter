@@ -1,0 +1,85 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    increment_version_code_time()
+    gradle(
+      task: "assemble",
+      build_type: "Release"
+    )
+    upload_to_play_store(
+      track: 'production',
+      release_status: 'draft'
+    )
+  end
+
+  lane :increment_version_code_time do
+
+    # Read the pubspec.yaml file
+    pubspec_path = "../../pubspec.yaml"
+    pubspec_content = File.read(pubspec_path)
+
+    # Extract the version line (e.g., version: 6.1.7+2024091501)
+    version_line = pubspec_content.match(/version:\s(\d+\.\d+\.\d+)\+(\d+)/)
+
+    # Extract version name and version code
+    version_name = version_line[1]
+    version_code = version_line[2].to_i
+
+    # Path to the version.properties file
+    version_file_path = "../version.properties"
+
+    # Increment the versionCode by 1
+    new_version_code = version_code + 1
+
+    # Print extracted version details
+    puts "Version Name: #{version_name}"
+    puts "New Version Code: #{new_version_code}"
+    
+    # # Replace the current versionCode with the new one
+    new_version_file_content = "versionName=#{version_name}\nversionCode=#{new_version_code}"
+  
+    # # Write the updated content back to build.gradle
+    File.open(version_file_path, "w") { |file| file.puts new_version_file_content }
+
+    # Update the version code in pubspec.yaml
+    new_pubspec_content = pubspec_content.gsub(/version:\s(\d+\.\d+\.\d+)\+\d+/, "version: #{version_name}+#{new_version_code}")
+
+  
+    # Write the updated pubspec.yaml content
+    File.open(pubspec_path, "w") { |file| file.puts new_pubspec_content }
+
+    # puts "Updated version code in build.gradle to #{new_version_code}"
+  end
+  
+end
