@@ -5,22 +5,22 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000253">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000312">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: Switch to android increment_version_code_time lane" time="0.00028">
+      <testcase classname="fastlane.lanes" name="1: Switch to android increment_version_code_time lane" time="0.000124">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: assembleRelease" time="22.99542">
+      <testcase classname="fastlane.lanes" name="2: assembleRelease" time="34.620375">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: upload_to_play_store" time="40.032328">
+      <testcase classname="fastlane.lanes" name="3: upload_to_play_store" time="33.569815">
         
       </testcase>
     
