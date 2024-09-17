@@ -70,5 +70,6 @@ ios/*.ipa
 ios/*.zip
 ios/fastlane/*p8
 ios/fastlane/.env
+ios/fastlane/report.xml
 
 lib/home/Chat/chat_config.dart
