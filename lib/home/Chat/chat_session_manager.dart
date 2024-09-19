@@ -26,6 +26,15 @@ class ChatSessionManager with ChangeNotifier {
     notifyListeners();
   }
 
+  // Add a new method to update the last assistant message
+  void updateLastAssistantMessage(String id, String content) {
+    final session = _sessions.firstWhere((session) => session.id == id);
+    // Find the last message that is from the assistant
+    final assistantMessage = session.messages.lastWhere((message) => message['role'] == 'assistant');
+    assistantMessage['content'] = content;
+    notifyListeners();
+  }
+
   void selectSession(ChatSession session) {
     _selectedSession = session;
     notifyListeners();
