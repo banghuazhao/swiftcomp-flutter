@@ -1,5 +1,7 @@
 # SwiftComp-flutter
-
+[![Version](https://img.shields.io/github/v/release/banghuazhao/swiftcomp-flutter)](https://github.com/banghuazhao/swiftcomp-flutter/releases)
+[![License](https://img.shields.io/github/license/banghuazhao/EasyToast)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-iOS%20|%20android-blue)](#)
 [![App Store](https://img.shields.io/badge/App%20Store-Download-blue.svg)](https://apps.apple.com/us/app/swiftcomp-composite-calculator/id1297825946)
 [![Google Play](https://img.shields.io/badge/Google%20Play-Download-green.svg)](https://play.google.com/store/apps/details?id=com.banghuazhao.swiftcomp&hl=en_US)
 
@@ -13,6 +15,7 @@ SwiftComp-flutter is a mobile application designed to provide a comprehensive co
 - **Laminate Plate Properties:** Compute the properties of laminate plates.
 - **Laminate 3D Properties:** Evaluate the three-dimensional properties of laminate materials.
 - **UDFRC Properties:** Calculate the properties for user-defined fiber-reinforced composites (UDFRC).
+- **Chat (Coming Soon):** A built-in AI expert chat feature is currently under development.
 
 ## Requirements
 
@@ -22,10 +25,10 @@ SwiftComp-flutter is a mobile application designed to provide a comprehensive co
 ## Installation
 
 ### iOS
-Download SwiftComp-flutter from the [App Store](https://apps.apple.com/us/app/swiftcomp-composite-calculator/id1297825946).
+Download SwiftComp from the [App Store](https://apps.apple.com/us/app/swiftcomp-composite-calculator/id1297825946).
 
 ### Android
-Download SwiftComp-flutter from the [Google Play Store](https://play.google.com/store/apps/details?id=com.banghuazhao.swiftcomp&hl=en_US).
+Download SwiftComp from the [Google Play Store](https://play.google.com/store/apps/details?id=com.banghuazhao.swiftcomp&hl=en_US).
 
 ## Screenshots
 
@@ -42,3 +45,10 @@ Download SwiftComp-flutter from the [Google Play Store](https://play.google.com/
 2. **Input Parameters:** Enter the necessary parameters for your composite material.
 3. **Calculate:** Press the calculate button to obtain results.
 4. **View Results:** The app provides detailed information on the composite's properties.
+5. **Chat:** A built-in AI expert chat feature is currently under development.
+
+## Contributing
+Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a pull request.
+
+## License
+SwiftComp-flutter is released under the MIT License. See [LICENSE](LICENSE) for details.
