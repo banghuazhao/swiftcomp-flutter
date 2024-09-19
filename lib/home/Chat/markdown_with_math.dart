@@ -59,7 +59,7 @@ class NewlineMathBuilder extends MarkdownElementBuilder {
   @override
   Widget visitText(md.Text text, TextStyle? preferredStyle) {
     final mathExpression = text.text;
-    print("Math equation detected: $mathExpression");
+    // print("Math equation detected: $mathExpression");
     return Math.tex(mathExpression, textStyle: preferredStyle);
   }
 }
@@ -68,7 +68,7 @@ class InlineMathBuilder extends MarkdownElementBuilder {
   @override
   Widget visitText(md.Text text, TextStyle? preferredStyle) {
     final mathExpression = text.text;
-    print("Math equation detected: $mathExpression");
+    // print("Math equation detected: $mathExpression");
     return Math.tex(mathExpression,
         mathStyle: MathStyle.text, textStyle: preferredStyle);
   }

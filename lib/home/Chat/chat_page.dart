@@ -49,11 +49,7 @@ class _ChatPageState extends State<ChatPage> {
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
       }
     });
   }
@@ -87,6 +83,7 @@ class _ChatPageState extends State<ChatPage> {
                     onTap: () {
                       chatSessionManager
                           .selectSession(session); // Select the tapped session
+                      _scrollToBottom();
                       Navigator.pop(context); // Close the drawer
                     },
                   );
@@ -155,9 +152,7 @@ class _ChatPageState extends State<ChatPage> {
                           child: Container(
                               padding: EdgeInsets.fromLTRB(15.0, 10, 15, 10),
                               child: MarkdownWithMath(
-                                  markdownData: message['content'] ?? ''
-                              )
-                          ));
+                                  markdownData: message['content'] ?? '')));
                     }
                   },
                 ),
@@ -196,18 +191,31 @@ class _ChatPageState extends State<ChatPage> {
 
                                 _scrollToBottom();
 
+                                // Add an empty assistant message
+                                chatSessionManager.addMessageToSession(
+                                  session.id,
+                                  'assistant',
+                                  '',
+                                );
+
                                 try {
-                                  final response =
-                                      await chatService.sendMessage(session);
-
-                                  chatSessionManager.addMessageToSession(
-                                    session.id,
-                                    'assistant',
-                                    response,
-                                  );
-
-                                  _scrollToBottom();
-                                } finally {
+                                  String assistantResponse = '';
+                                  await chatService.sendMessage(session).listen(
+                                      (word) {
+                                    assistantResponse += word;
+                                    chatSessionManager
+                                        .updateLastAssistantMessage(
+                                      session.id,
+                                      assistantResponse,
+                                    );
+                                    _scrollToBottom(); // Scroll as words arrive
+                                    // print(assistantResponse);
+                                  }, onDone: () {
+                                    setState(() {
+                                      _isLoading = false; // Stop loading
+                                    });
+                                  });
+                                } catch (error) {
                                   setState(() {
                                     _isLoading = false; // Stop loading
                                   });
