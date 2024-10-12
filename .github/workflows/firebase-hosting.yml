@@ -18,11 +18,14 @@ jobs:
         with:
           flutter-version: '3.19.0'
 
+      - name: Clean build
+        run: flutter clean
+          
       - name: Install dependencies
         run: flutter pub get
 
       - name: Build Flutter Web
-        run: flutter build web
+        run: flutter build web --verbose
 
       - name: Deploy to Firebase Hosting
         env:
