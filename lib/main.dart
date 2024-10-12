@@ -2,6 +2,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:swiftcomp/generated/l10n.dart';
@@ -18,6 +19,8 @@ import 'injection_container.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await dotenv.load();
+
   Future.delayed(Duration(seconds: 1), () {
     AppTrackingTransparency.requestTrackingAuthorization();
   });
@@ -27,6 +30,7 @@ void main() async {
   await SharedPreferencesHelper.init();
 
   initInjection();
+
   runApp(MyApp());
 }
 
