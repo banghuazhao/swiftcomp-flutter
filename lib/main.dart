@@ -12,7 +12,6 @@ import 'package:swiftcomp/util/in_app_reviewer_helper.dart';
 import 'package:swiftcomp/util/others.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
-import 'amplifyconfiguration.dart';
 import 'presentation/bottom_navigator.dart';
 import 'injection_container.dart';
 
@@ -48,6 +47,7 @@ class _MyAppState extends State<MyApp> {
       await Amplify.addPlugin(AmplifyAuthCognito());
 
       // call Amplify.configure to use the initialized categories in your app
+      final amplifyconfig = dotenv.env['AMPLIFY_CONFIG'] ?? "";
       await Amplify.configure(amplifyconfig);
     } on Exception catch (e) {
       print('An error occurred configuring Amplify: $e');
