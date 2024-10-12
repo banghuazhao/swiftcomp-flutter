@@ -21,19 +21,19 @@ jobs:
         with:
           flutter-version: '3.19.0'
 
-      - name: Set environment variables
-        run: |
-          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
-          echo "AMPLIFY_CONFIG=${{ secrets.AMPLIFY_CONFIG }}" >> .env
-
       - name: Clean build
         run: flutter clean
           
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Set environment variables
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+          echo "AMPLIFY_CONFIG=${{ secrets.AMPLIFY_CONFIG }}" >> .env
+
       - name: Build Flutter Web
-        run: flutter build web --verbose
+        run: flutter build web
 
       - name: Deploy to Firebase Hosting
         env:
