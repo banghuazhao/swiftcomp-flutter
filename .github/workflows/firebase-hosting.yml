@@ -35,9 +35,12 @@ jobs:
       - name: Build Flutter Web
         run: flutter build web
 
-      - name: Deploy to Firebase Hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: |
-          npm install -g firebase-tools
-          firebase deploy
+#      The web gives error GET https://composites-ai.web.app/assets/.env 404 (Not Found)
+#      Let's use local deploy for now
+#      TODO: fix the web error for Deploy to Firebase Hosting
+#      - name: Deploy to Firebase Hosting
+#        env:
+#          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+#        run: |
+#          npm install -g firebase-tools
+#          firebase deploy
