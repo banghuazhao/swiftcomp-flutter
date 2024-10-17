@@ -6,34 +6,34 @@ import '../models/chat_chunk.dart';
 import '../utils/api_constants.dart';
 import '../utils/network_exceptions.dart';
 
-abstract class ChatCompletionsDataSource {
-  Stream<ChatChunk> sendMessages(List<Message> messages, List<FunctionTool> functionTools);
+abstract class OpenAIDataSource {
+  Stream<ChatChunk> sendMessages(
+      List<Message> messages, List<FunctionTool> functionTools);
 }
 
-class ChatRemoteDataSourceImpl implements ChatCompletionsDataSource {
+class ChatRemoteDataSourceImpl implements OpenAIDataSource {
   final http.Client client;
 
   ChatRemoteDataSourceImpl({required this.client});
 
   @override
-  Stream<ChatChunk> sendMessages(List<Message> messages,
-      List<FunctionTool> functionTools) async* {
-    final request = http.Request('POST', Uri.parse(ApiConstants.chatCompletionsEndpoint))
-      ..headers.addAll({
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${ApiConstants.apiKey}',
-      })
-      ..body = functionTools.isEmpty ? jsonEncode({
-        "model": "gpt-4o",
-        "stream": true,
-        'messages': messages
-      }) :
-      jsonEncode({
-        "model": "gpt-4o",
-        "stream": true,
-        'messages': messages,
-        "tools": functionTools
-      });
+  Stream<ChatChunk> sendMessages(
+      List<Message> messages, List<FunctionTool> functionTools) async* {
+    final request =
+        http.Request('POST', Uri.parse(ApiConstants.chatCompletionsEndpoint))
+          ..headers.addAll({
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${ApiConstants.apiKey}',
+          })
+          ..body = functionTools.isEmpty
+              ? jsonEncode(
+                  {"model": "gpt-4o", "stream": true, 'messages': messages})
+              : jsonEncode({
+                  "model": "gpt-4o",
+                  "stream": true,
+                  'messages': messages,
+                  "tools": functionTools
+                });
 
     // var prettyBody = const JsonEncoder.withIndent('  ').convert(jsonDecode(request.body));
     // print(prettyBody);

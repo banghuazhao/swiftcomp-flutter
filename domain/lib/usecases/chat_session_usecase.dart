@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../entities/chat_session.dart';
 import '../entities/message.dart';
 import '../repositories_abstract/chat_session_repository.dart';
@@ -20,9 +22,11 @@ class ChatSessionUseCase {
     repository.deleteSession(sessionId);
   }
 
-  @override
-  Future<void> createSession(ChatSession session) async {
-    repository.createSession(session);
+  ChatSession createNewSession() {
+    final newSession = ChatSession(
+      title: 'New Chat',
+    );
+    return newSession;
   }
 
   void addMessageToSession(ChatSession session, Message message) {
