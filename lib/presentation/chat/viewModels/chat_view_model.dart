@@ -141,7 +141,7 @@ class ChatViewModel extends ChangeNotifier {
   }
 
   Future<void> checkFunctionCall(Message message) async {
-    final tool = message?.toolCalls?.first;
+    final tool = message.toolCalls?.first;
     if (tool != null) {
       final toolMessage = _functionToolsUseCase.handleToolCall(tool);
       await sendMessage(toolMessage);
