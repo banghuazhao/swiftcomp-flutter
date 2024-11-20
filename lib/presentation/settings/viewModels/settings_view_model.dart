@@ -7,7 +7,6 @@ import 'package:domain/usecases/auth_usecase.dart';
 import 'package:domain/usecases/user_usercase.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:swiftcomp/presentation/settings/providers/feature_flag_provider.dart';
@@ -83,13 +82,14 @@ class SettingsViewModel extends ChangeNotifier {
   Future<void> newLogout(BuildContext context) async {
     try {
       await authUseCase.logout();
-      Fluttertoast.showToast(
-        msg: "Logged out",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
+
+      // Display Snackbar for success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Logged out"),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.black,
+        ),
       );
       isLoggedIn = false;
       notifyListeners();
@@ -97,8 +97,17 @@ class SettingsViewModel extends ChangeNotifier {
       if (kDebugMode) {
         print(e);
       }
+      // Display Snackbar for error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Failed to log out. Please try again."),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
+
 
   Future<void> openFeedback() async {
     final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
