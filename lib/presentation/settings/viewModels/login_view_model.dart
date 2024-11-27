@@ -101,7 +101,6 @@ class LoginViewModel extends ChangeNotifier {
         if (!isValid) {
           throw Exception('Google token validation failed.');
         }
-
         // Sync the user data
         await syncUser(user.displayName, user.email, user.photoUrl);
       }
