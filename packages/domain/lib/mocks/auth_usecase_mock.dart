@@ -42,6 +42,42 @@ class MockAuthUseCase extends Mock implements AuthUseCase {
         returnValue: Future.value(),
         returnValueForMissingStub: Future.value(),
       );
+  @override
+  Future<void> forgetPassword(String email) =>
+      super.noSuchMethod(
+        Invocation.method(#forgetPassword, [email]),
+        returnValue: Future.value(),
+        returnValueForMissingStub: Future.value(),
+      );
+  @override
+  Future<String> resetPassword(String email, String newPassword, String confirmationCode) =>
+      super.noSuchMethod(Invocation.method(#resetPassword, [email, newPassword, confirmationCode]),
+          returnValue: Future.value(''),
+          returnValueForMissingStub: Future.value(''));
+
+  @override
+  Future<String> updatePassword(String newPassword) =>
+      super.noSuchMethod(
+        Invocation.method(#updatePassword, [newPassword]),
+          returnValue: Future.value(''),
+          returnValueForMissingStub: Future.value(''));
+
+  @override
+  Future<bool> isLoggedIn() =>
+      super.noSuchMethod(
+        Invocation.method(#isLoggedIn, []),
+        returnValue: Future.value(true), // Corrected to Future<bool>
+        returnValueForMissingStub: Future.value(false), // Default fallback to false
+      );
+
+  @override
+  Future<void> logout() =>
+      super.noSuchMethod(
+        Invocation.method(#logout, []),
+        returnValue: Future.value(),
+        returnValueForMissingStub: Future.value(),
+      );
+
 }
 
 
