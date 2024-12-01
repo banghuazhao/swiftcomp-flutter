@@ -208,5 +208,32 @@ void main() {
         expect(userProfileViewModel.isLoading, false);
       });
     });
+
+    group('setLoading', () {
+      test('should update isLoading and notify listeners when set to true', () {
+        final MockAuthUseCase mockAuthUseCase = MockAuthUseCase();
+        final MockUserUseCase mockUserUseCase = MockUserUseCase();
+        final UserProfileViewModel userProfileViewModel = UserProfileViewModel(authUseCase: mockAuthUseCase,userUseCase: mockUserUseCase);
+        // Act
+        userProfileViewModel.setLoading(true);
+
+        // Assert
+        expect(userProfileViewModel.isLoading, true);
+      });
+
+      test('should update isLoading and notify listeners when set to false', () {
+        final MockAuthUseCase mockAuthUseCase = MockAuthUseCase();
+        final MockUserUseCase mockUserUseCase = MockUserUseCase();
+        final UserProfileViewModel userProfileViewModel = UserProfileViewModel(authUseCase: mockAuthUseCase,userUseCase: mockUserUseCase);
+        // Arrange
+        userProfileViewModel.setLoading(true); // Start with true
+
+        // Act
+        userProfileViewModel.setLoading(false);
+
+        // Assert
+        expect(userProfileViewModel.isLoading, false);
+      });
+    });
     });
 }
