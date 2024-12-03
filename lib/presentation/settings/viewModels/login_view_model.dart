@@ -129,8 +129,9 @@ class LoginViewModel extends ChangeNotifier {
   Future<void> signInWithApple() async {
     try {
       _isSigningIn = false;
+      _errorMessage = null;
       // Request credentials from Apple
-      final credential = await SignInWithApple.getAppleIDCredential(
+      final credential = await appleSignInService.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
@@ -162,8 +163,9 @@ class LoginViewModel extends ChangeNotifier {
       // Notify listeners for UI update
       notifyListeners();
     } catch (e) {
-      print('Sign in with Apple failed: $e');
-      rethrow; // Optionally rethrow for higher-level error handling
+      _errorMessage = 'Sign in with Apple failed: $e';
+      _isSigningIn = false; // Reset signing in state
+      notifyListeners();// Optionally rethrow for higher-level error handling
     }
   }
 

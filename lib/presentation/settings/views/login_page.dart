@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
       // Display failure Snackbar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Google Sign-In failed"),
+          content: Text(viewModel.errorMessage ?? "Google Sign-In failed"),
           duration: Duration(seconds: 2),
           backgroundColor: Colors.red,
         ),
