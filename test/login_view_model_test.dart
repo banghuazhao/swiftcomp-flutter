@@ -1,23 +1,30 @@
 import 'package:domain/mocks/auth_usecase_mock.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:infrastructure/google_sign_in_service.dart';
 import 'package:infrastructure/mocks/apple_sign_in_service_mock.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:swiftcomp/presentation/settings/viewModels/login_view_model.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:infrastructure/mocks/google_sign_in_service_mock.dart';
 
 void main() {
   group('LoginViewModel Tests', () {
     late MockAuthUseCase mockAuthUseCase;
     late MockAppleSignInService mockAppleSignInService;
+    late MockGoogleSignInService mockGoogleSignInService;
     late LoginViewModel loginViewModel;
 
     setUp(() {
       // Initialize the mocks and view model before each test
       mockAuthUseCase = MockAuthUseCase();
       mockAppleSignInService = MockAppleSignInService();
+      mockGoogleSignInService = MockGoogleSignInService();
       loginViewModel = LoginViewModel(
         authUseCase: mockAuthUseCase,
         appleSignInService: mockAppleSignInService,
+        googleSignInService: mockGoogleSignInService,
       );
     });
 
@@ -142,7 +149,7 @@ void main() {
         const identityToken = 'validIdentityToken';
         const expectedEmail = 'test@example.com';
 
-        // Mocking the repository behavior
+        // Mocking the repository behavior and don't need to specify the function call
         when(mockAuthUseCase.validateAppleToken(identityToken))
             .thenAnswer((_) async => expectedEmail);
 
@@ -171,7 +178,7 @@ void main() {
 
     group('signInWithApple', () {
       test('should sign in with Apple and update the user state on success', () async {
-        // Arrange
+        // Arrange. setting up mocks and fake data
         final mockCredential = AuthorizationCredentialAppleID(
           userIdentifier: 'mock-user-id',
           givenName: 'Mock',
@@ -180,8 +187,8 @@ void main() {
           authorizationCode: 'mock-auth-code',
           identityToken: 'mock-identity-token',
         );
-
         const scopes = [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName];
+        //those are dependencies that actually doing the work.
         when(mockAppleSignInService.getAppleIDCredential(
           scopes: scopes,
           webAuthenticationOptions: anyNamed('webAuthenticationOptions'),
@@ -193,7 +200,7 @@ void main() {
         when(mockAuthUseCase.syncUser('Mock', 'mockuser@example.com', null))
             .thenAnswer((_) async => {});
 
-        // Act
+        // Act.Verify the Behavior
         await loginViewModel.signInWithApple();
 
         // Assert
@@ -208,7 +215,7 @@ void main() {
       });
 
       test('should set errorMessage if identity token is null', () async {
-        // Arrange
+        // Arrange. setting up mocks and fake data
         final mockCredential = AuthorizationCredentialAppleID(
           userIdentifier: 'mock-user-id',
           givenName: 'Mock',
@@ -290,7 +297,77 @@ void main() {
         )).called(1);
         verify(mockAuthUseCase.validateAppleToken('mock-identity-token')).called(1);
       });
+    });
 
+    group('signInWithGoogle', () {
+      test('should sign in successfully and sync user on web', () async {
+        // Arrange
+        when(mockGoogleSignInService.signIn(
+                scopes: ['email', 'openid', 'profile'],
+                clientId: anyNamed("clientId"),
+                hostedDomain: anyNamed('hostedDomain'),
+                serverClientId: anyNamed('serverClientId')))
+            .thenAnswer((_) async => GoogleSignInUser(
+                email: "test.user@example.com",
+                displayName: "Test User",
+                photoUrl: "https://example.com/photo.jpg",
+                idToken: "idToken"));
+
+        // Act
+        await loginViewModel.signInWithGoogle();
+
+        // Assert
+        expect(loginViewModel.isSigningIn, true);
+        verify(mockGoogleSignInService.signIn(
+                scopes: ['email', 'openid', 'profile'],
+                clientId: anyNamed("clientId"),
+                hostedDomain: anyNamed('hostedDomain'),
+                serverClientId: anyNamed('serverClientId')))
+            .called(1);
+        verify(mockAuthUseCase.syncUser(
+                'Test User', 'test.user@example.com', 'https://example.com/photo.jpg'))
+            .called(1);
+      });
+
+      test('should throw an exception when ID token is missing on non-web platforms', () async {
+        // Arrange
+
+        when(mockGoogleSignInService.signIn(
+                scopes: ['email', 'openid', 'profile'],
+                clientId: anyNamed("clientId"),
+                hostedDomain: anyNamed('hostedDomain'),
+                serverClientId: anyNamed('serverClientId')))
+            .thenAnswer((_) async => GoogleSignInUser(
+                email: "test.user@example.com",
+                displayName: "Test User",
+                photoUrl: "https://example.com/photo.jpg",
+                idToken: null));
+
+        // Act
+        await loginViewModel.signInWithGoogle();
+
+        // Assert
+        expect(loginViewModel.errorMessage,
+            'Exception: Unable to retrieve ID token. Please try again.');
+        expect(loginViewModel.isSigningIn, false);
+      });
+
+      test('should handle errors during Google sign-in', () async {
+        // Arrange
+        when(mockGoogleSignInService.signIn(
+                scopes: ['email', 'openid', 'profile'],
+                clientId: anyNamed("clientId"),
+                hostedDomain: anyNamed('hostedDomain'),
+                serverClientId: anyNamed('serverClientId')))
+            .thenThrow(Exception('Google Sign-In failed'));
+
+        // Act
+        await loginViewModel.signInWithGoogle();
+
+        // Assert
+        expect(loginViewModel.errorMessage, 'Exception: Google Sign-In failed');
+        expect(loginViewModel.isSigningIn, false);
+      });
     });
   });
 }
