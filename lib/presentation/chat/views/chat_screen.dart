@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -98,35 +100,75 @@ class _ChatScreenState extends State<ChatScreen>
             ],
           ),
           drawer: viewModel.isLoggedIn ? ChatDrawer() : null,
-          body: viewModel.isLoggedIn
-              ? ChatMessageList()
-              : Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "You need to be logged in to use the chat feature.",
-                  textAlign: TextAlign.center,
+          body: Stack(
+            children: [
+              // Main content (ChatMessageList or Login prompt)
+              ChatMessageList(),
+
+              // Blur effect applied when the user is not logged in and there are more than 6 messages
+              if (!viewModel.isLoggedIn && viewModel.messages.length > 6)
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // Adjust blur intensity
+                  child: Container(
+                    color: Colors.black.withOpacity(0.2), // Semi-transparent overlay
+                  ),
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () async {
-                    String? result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginPage(),
+
+              // Foreground content (Text & Button) remains fully visible
+              if (!viewModel.isLoggedIn && viewModel.messages.length > 6)
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.chat_bubble_outline,
+                        size: 100,
+                        color: Colors.blueAccent,
                       ),
-                    );
-                    if (result == "Log in Success") {
-                      await viewModel.checkAuthStatus();
-                      setState(() {}); // Trigger UI rebuild
-                    }
-                  },
-                  child: const Text("Login to Chat"),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Please sign in to access the chat and continue your learning experience.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black, // Keep text fully visible
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          String? result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                            ),
+                          );
+                          if (result == "Log in Success") {
+                            await viewModel.checkAuthStatus();
+                            setState(() {}); // Trigger UI rebuild
+                          }
+                        },
+                        icon: const Icon(Icons.login, size: 20),
+                        label: const Text(
+                          "Login to Chat",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
+            ],
           ),
+
+
         );
       },
     );
