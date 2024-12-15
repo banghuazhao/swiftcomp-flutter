@@ -1,3 +1,4 @@
+
 import 'package:domain/entities/application.dart';
 import 'package:domain/entities/user.dart';
 import 'package:domain/usecases/composite_expert_usecase.dart';
@@ -37,4 +38,18 @@ class ManageCompositeExpertsViewModel extends ChangeNotifier {
     isLoading = value;
     notifyListeners();
   }
+  Future<User> getUserById(int userId) async {
+    try {
+      // Call the use case to fetch user by ID
+      User user = await userUseCase.getUserById(userId);
+      return user;
+    } catch (e) {
+      // Log the error for debugging
+      print("Error fetching user: $e");
+
+      // Re-throw the error or handle it appropriately
+      throw Exception("Failed to fetch user with ID: $userId");
+    }
+  }
+
 }

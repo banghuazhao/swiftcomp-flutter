@@ -1,3 +1,4 @@
+
 import 'package:infrastructure/token_provider.dart';
 
 import '../entities/user.dart';
@@ -25,5 +26,9 @@ class UserUseCase {
   Future<String> submitApplication(String? reason) async{
     String result = await repository.submitApplication(reason);
     return result;
+  }
+
+  Future<User> getUserById(int userId) async {
+    return await repository.getUserById(userId);
   }
 }

@@ -27,10 +27,10 @@ class UserRepositoryImpl implements UserRepository {
 
     // Check the response status and handle accordingly
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body); //jsonDecode convert a JSON string into a Dart object(which is Dart Map->Map<String, dynamic>)
+      final data = jsonDecode(response
+          .body); //jsonDecode convert a JSON string into a Dart object(which is Dart Map->Map<String, dynamic>)
       print(User.fromJson(data));
       return User.fromJson(data);
-
     } else {
       throw mapServerErrorToDomainException(response);
     }
@@ -73,7 +73,7 @@ class UserRepositoryImpl implements UserRepository {
     final baseURL = await apiEnvironment.getBaseUrl();
     final url = Uri.parse('$baseURL/experts/register-expert');
     final response = await authClient.post(
-        url,
+      url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
@@ -87,6 +87,29 @@ class UserRepositoryImpl implements UserRepository {
       return 'failed';
     } else {
       return 'error';
+    }
+  }
+
+  @override
+  Future<User> getUserById(int userId) async {
+    final baseURL = await apiEnvironment.getBaseUrl();
+    final url = Uri.parse('$baseURL/users/$userId');
+    final response = await authClient.get(
+      url,
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      try {
+        final data = jsonDecode(response.body); // Parse JSON response
+        return User.fromJson(data); // Convert to User object
+      } catch (e) {
+        throw Exception("Failed to parse user data: $e");
+      }
+    } else if (response.statusCode == 404) {
+      throw Exception("User not found"); // Handle 'User not found' error
+    } else {
+      throw mapServerErrorToDomainException(response); // Handle other server errors
     }
   }
 }
