@@ -7,4 +7,5 @@ abstract class UserRepository {
   Future<void> deleteAccount();
   Future<String> submitApplication(String? reason);
   Future<User> getUserById(int userId);
+  Future<void> becomeExpert(int userId);
 }

@@ -112,4 +112,28 @@ class UserRepositoryImpl implements UserRepository {
       throw mapServerErrorToDomainException(response); // Handle other server errors
     }
   }
+
+  @override
+  Future<void> becomeExpert(int userId) async {
+    try {
+      final baseURL = await apiEnvironment.getBaseUrl();
+      final url = Uri.parse('$baseURL/users/expert');
+
+      final response = await authClient.patch(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'userId': userId}),
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception("Failed to add the expert: ${response.statusCode}");
+      }
+    } catch (e) {
+      // Log or rethrow the error
+      print("Error in becomeExpert: $e");
+      throw Exception("An error occurred while adding the expert.");
+    }
+  }
+
+
 }

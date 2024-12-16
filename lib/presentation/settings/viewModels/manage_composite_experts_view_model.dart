@@ -52,4 +52,31 @@ class ManageCompositeExpertsViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> approveExpert(int userId) async {
+    try {
+      // First step: Make user an expert
+      await userUseCase.becomeExpert(userId);
+      // Second step: Delete the user's application
+      await compositeExpertUseCase.deleteApplication(userId);
+      // Update the list by removing the approved application
+      applications.removeWhere((app) => app.userId == userId);
+      // Notify listeners about the state change
+      notifyListeners();
+    } catch (e) {
+      print("Error in approveExpert: $e");
+      throw Exception("Failed to approve expert with user ID: $userId.");
+    }
+  }
+
+  Future<void> disapproveExpert(int userId) async {
+    try {
+      await compositeExpertUseCase.deleteApplication(userId);
+      applications.removeWhere((app) => app.userId == userId);
+      notifyListeners();
+    } catch (e) {
+      print("Error in disapprove Expert: $e");
+      throw Exception("Failed to disapprove expert with user ID: $userId.");
+    }
+  }
+
 }

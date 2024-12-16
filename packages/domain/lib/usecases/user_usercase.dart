@@ -31,4 +31,8 @@ class UserUseCase {
   Future<User> getUserById(int userId) async {
     return await repository.getUserById(userId);
   }
+
+  Future<void> becomeExpert(int userId) async {
+    await repository.becomeExpert(userId);
+  }
 }

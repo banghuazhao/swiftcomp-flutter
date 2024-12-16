@@ -80,8 +80,8 @@ class _ManageCompositeExpertsPageState extends State<ManageCompositeExpertsPage>
                                       mainAxisAlignment: MainAxisAlignment.end, // Align buttons to the right
                                       children: [
                                         ElevatedButton(
-                                          onPressed: () {
-                                            print("Approved User ID: ${application?.userId}");
+                                          onPressed: () async {
+                                            await viewModel.approveExpert(application.userId);
                                           },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: Colors.orange,
@@ -95,8 +95,8 @@ class _ManageCompositeExpertsPageState extends State<ManageCompositeExpertsPage>
                                         ),
                                         const SizedBox(width: 8.0), // Space between buttons
                                         ElevatedButton(
-                                          onPressed: () {
-                                            print("Disapproved User ID: ${application?.userId}");
+                                          onPressed: () async {
+                                            await viewModel.disapproveExpert(application.userId);
                                           },
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: Colors.white54,
