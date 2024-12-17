@@ -20,7 +20,7 @@ class _ApplyExpertPage extends State<ApplyExpertPage> {
   @override
   void dispose() {
     _reasonController.dispose();
-    _profileLinkController.dispose(); // Dispose of profile link controller
+    _profileLinkController.dispose();
     super.dispose();
   }
 
@@ -49,7 +49,7 @@ class _ApplyExpertPage extends State<ApplyExpertPage> {
     try {
       // Access the view model and submit the application
       final viewModel = Provider.of<SettingsViewModel>(context, listen: false);
-      final result = await viewModel.submitApplication(_reasonController.text);
+      final result = await viewModel.submitApplication(_reasonController.text, profileLink);
 
       if (result == 'Application successfully submitted. Please wait for approval.' ||
           result == 'This user has already submitted an expert application. Please wait for approval.' ||
