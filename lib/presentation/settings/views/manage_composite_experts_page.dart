@@ -61,12 +61,18 @@ class _ManageCompositeExpertsPageState extends State<ManageCompositeExpertsPage>
                                           throw 'Could not launch ${application.link}';
                                         }
                                       },
-                                      child: Text(
-                                        "Profile Link: ${application.link}",
-                                        style: const TextStyle(
-                                          color: Colors.blue,
+                                      child: RichText(
+                                        text: TextSpan(
+                                          text: "Profile Link: ", // The first part with black color
+                                          style: const TextStyle(color: Colors.black), // Style for "Profile Link:"
+                                          children: [
+                                            TextSpan(
+                                              text: application.link, // The link with blue color
+                                              style: const TextStyle(color: Colors.blue),
+                                            ),
+                                          ],
                                         ),
-                                      ),
+                                      )
                                     )
                                         : const Text("Profile Link: Not available"),
 
