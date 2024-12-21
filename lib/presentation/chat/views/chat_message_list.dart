@@ -220,10 +220,14 @@ class _ChatMessageListState extends State<ChatMessageList> {
                   keyboardType: TextInputType.multiline,
                   textInputAction: TextInputAction.done,
                   // Treat Enter as Done
-                  maxLines: null, // Allow multiple lines if Shift + Enter is used
+                  maxLines: null,
+                  onChanged: (text) {
+                    setState(() {}); // Ensure the button updates
+                  },// Allow multiple lines if Shift + Enter is used
                 ),
               ),
             ),
+
             viewModel.isLoading
                 ? CircularProgressIndicator()
                 : IconButton(
