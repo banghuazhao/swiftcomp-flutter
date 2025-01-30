@@ -10,7 +10,8 @@ import 'package:swiftcomp/presentation/chat/viewModels/chat_view_model.dart';
 import 'package:domain/mocks/chat_usecase_mock.dart';
 import 'package:domain/mocks/chatsession_usecase_mock.dart';
 import 'package:domain/mocks/functiontool_usecase_mock.dart';
-/*
+import 'package:domain/mocks/tool_usecase_mock.dart';
+
 void main() {
 
   group('ChatViewModel Tests', () {
@@ -23,6 +24,7 @@ void main() {
     late MockThreadsUseCase mockThreadsUseCase;
     late MockThreadRunsUseCase mockThreadRunsUseCase;
     late ChatViewModel chatViewModel;
+    late MockToolsUseCase mockToolsUseCase;
 
     setUp(() {
       // Initialize the mocks and view model before each test
@@ -39,6 +41,7 @@ void main() {
         chatUseCase: mockChatUseCase,
         authUseCase: mockAuthUseCase,
         userUserCase: mockUserUseCase,
+        toolsUseCase:  mockToolsUseCase,
         chatSessionUseCase: mockChatSessionUseCase,
         functionToolsUseCase: mockFunctionToolsUseCase,
         messagesUseCase: mockMessagesUseCase,
@@ -105,7 +108,4 @@ void main() {
   });
 }
 
-class MockToolsUseCase {
 
-}
-*/
