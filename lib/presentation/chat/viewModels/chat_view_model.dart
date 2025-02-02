@@ -41,6 +41,8 @@ class ChatViewModel extends ChangeNotifier {
   StreamController<Message> messageStreamController =
       StreamController.broadcast();
 
+  final assistantId = "asst_pxUDI3A9Q8afCqT9cqgUkWQP";
+
   List<String> defaultQuestions = [
     "Calculate lamina engineering constants",
     "Calculate lamina strain",
@@ -167,7 +169,64 @@ class ChatViewModel extends ChangeNotifier {
 
   Future<void> sendInputMessage(text) async {
     final message = Message(role: 'user', content: text);
-    await sendMessage(message);
+    if (messages.isEmpty) {
+      await sendMessageAndRun(true, message);
+    } else {
+      await sendMessageAndRun(false, message);
+    }
+  }
+
+  Future<void> sendMessageAndRun(bool isFirstMessage, Message newMessage) async {
+
+    if (_selectedSession == null) return;
+    messages.add(newMessage);
+    setLoading(true);
+    scrollToBottom();
+
+    // Store the latest message
+    Message? finalMessage;
+
+    // Create a subscription to listen to the stream
+    messageStreamController = StreamController.broadcast();
+    final String threadId;
+    if (isFirstMessage) {
+      final thread = await _threadsUseCase.createThread();
+      threadId = thread.id;
+      _selectedSession!.threadId = threadId;
+    } else {
+      threadId = _selectedSession!.threadId!;
+    }
+    await _messagesUseCase.createMessage(threadId, newMessage.content);
+    final subscription =_threadRunsUseCase
+        .createRunStream(threadId, assistantId)
+        .listen((Message message) {
+      // Add each streamed message to the stream controller and to the message list
+      messageStreamController.add(message);
+      finalMessage = message; // Update the latest message
+      scrollToBottom();
+    }, onError: (error) {
+      messageStreamController.add(error);
+      print('Error receiving messages: $error');
+      // Handle the error
+    }, onDone: () {
+      // Stream is done; this will trigger when the stream closes
+      print("stream is done, finalMessage: $finalMessage");
+    });
+
+    // Wait for the stream to finish
+    await subscription.asFuture();
+
+    print("stream is finished");
+
+    messageStreamController.close();
+
+    if (finalMessage != null) {
+      messages.add(finalMessage!);
+      saveSession();
+      await checkFunctionCall(finalMessage!);
+    }
+
+    setLoading(false);
   }
 
   Future<void> sendMessage(Message newMessage) async {

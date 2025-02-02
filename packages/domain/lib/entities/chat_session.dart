@@ -5,6 +5,7 @@ class ChatSession {
   final String id;
   final String title;
   List<Message> messages;
+  String? threadId;
 
   // Constructor
   ChatSession({
