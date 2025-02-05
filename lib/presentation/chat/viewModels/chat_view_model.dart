@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:domain/domain.dart';
 import 'package:domain/entities/tool_creation_requests.dart';
+import 'package:domain/entities/message.dart';
+import 'package:domain/entities/thread.dart';
+import 'package:domain/entities/thread_response.dart';
 import 'package:domain/entities/user.dart';
 import 'package:domain/usecases/auth_usecase.dart';
 import 'package:domain/usecases/composites_tools_usecase.dart';
@@ -44,14 +47,14 @@ class ChatViewModel extends ChangeNotifier {
   final assistantId = "asst_pxUDI3A9Q8afCqT9cqgUkWQP";
 
   List<String> defaultQuestions = [
-    "Calculate lamina engineering constants",
-    "Calculate lamina strain",
-    "Calculate lamina stress",
-    "Calculate laminate plate properties",
-    "Calculate laminate 3D properties",
-    "Calculate laminar strain",
-    "Calculate laminate stress",
-    "Calculates the UDFRC properties by rules of mixture",
+    "What is MSG?",
+    "What is the upper bound of Young's modulus for composites?",
+    // "Calculate lamina stress",
+    // "Calculate laminate plate properties",
+    // "Calculate laminate 3D properties",
+    // "Calculate laminar strain",
+    // "Calculate laminate stress",
+    // "Calculates the UDFRC properties by rules of mixture",
     // "Give me some math equations.",
   ];
 
@@ -170,53 +173,72 @@ class ChatViewModel extends ChangeNotifier {
   Future<void> sendInputMessage(text) async {
     final message = Message(role: 'user', content: text);
     if (messages.isEmpty) {
-      await sendMessageAndRun(true, message);
+      await sendFirstMessageAndRun(message);
     } else {
-      await sendMessageAndRun(false, message);
+      await sendMessageAndRun(message);
     }
   }
 
-  Future<void> sendMessageAndRun(bool isFirstMessage, Message newMessage) async {
-
+  Future<void> sendFirstMessageAndRun(Message newMessage) async {
     if (_selectedSession == null) return;
     messages.add(newMessage);
     setLoading(true);
     scrollToBottom();
-
-    // Store the latest message
     Message? finalMessage;
-
-    // Create a subscription to listen to the stream
     messageStreamController = StreamController.broadcast();
-    final String threadId;
-    if (isFirstMessage) {
-      final thread = await _threadsUseCase.createThread();
-      threadId = thread.id;
-      _selectedSession!.threadId = threadId;
-    } else {
-      threadId = _selectedSession!.threadId!;
+    final subscription = _threadRunsUseCase
+        .createMessageAndRunStream(assistantId, newMessage.content)
+        .listen((ThreadResponse threadResponse) {
+          if (threadResponse is Message) {
+            messageStreamController.add(threadResponse);
+            finalMessage = threadResponse;
+            scrollToBottom();
+          } else if (threadResponse is Thread) {
+            _selectedSession?.threadId = threadResponse.id;
+          }
+    }, onError: (error) {
+      messageStreamController.add(error);
+      print('Error receiving messages: $error');
+    }, onDone: () {
+      print("stream is done, finalMessage: $finalMessage");
+    });
+
+    await subscription.asFuture();
+
+    messageStreamController.close();
+
+    if (finalMessage != null) {
+      messages.add(finalMessage!);
+      saveSession();
+      await checkFunctionCall(finalMessage!);
     }
+
+    setLoading(false);
+  }
+
+  Future<void> sendMessageAndRun(Message newMessage) async {
+    if (_selectedSession == null) return;
+    messages.add(newMessage);
+    setLoading(true);
+    scrollToBottom();
+    Message? finalMessage;
+    messageStreamController = StreamController.broadcast();
+    final String threadId = _selectedSession!.threadId!;
     await _messagesUseCase.createMessage(threadId, newMessage.content);
-    final subscription =_threadRunsUseCase
+    final subscription = _threadRunsUseCase
         .createRunStream(threadId, assistantId)
         .listen((Message message) {
-      // Add each streamed message to the stream controller and to the message list
       messageStreamController.add(message);
-      finalMessage = message; // Update the latest message
+      finalMessage = message;
       scrollToBottom();
     }, onError: (error) {
       messageStreamController.add(error);
       print('Error receiving messages: $error');
-      // Handle the error
     }, onDone: () {
-      // Stream is done; this will trigger when the stream closes
       print("stream is done, finalMessage: $finalMessage");
     });
 
-    // Wait for the stream to finish
     await subscription.asFuture();
-
-    print("stream is finished");
 
     messageStreamController.close();
 
@@ -290,8 +312,7 @@ class ChatViewModel extends ChangeNotifier {
 
   Future<void> onDefaultQuestionsTapped(int index) async {
     final question = defaultQuestions[index];
-    final message = Message(role: 'user', content: question);
-    await sendMessage(message);
+    await sendInputMessage(question);
   }
 
   Future<List<ToolCreationRequest>> getAllTools() async {

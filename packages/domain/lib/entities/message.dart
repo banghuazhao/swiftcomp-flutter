@@ -1,6 +1,7 @@
+import 'package:domain/entities/thread_response.dart';
 import 'package:uuid/uuid.dart';
 
-class Message {
+class Message extends ThreadResponse {
   String id;
   final String role;
   String content;
