@@ -192,6 +192,7 @@ class ChatViewModel extends ChangeNotifier {
           if (threadResponse is Message) {
             messageStreamController.add(threadResponse);
             finalMessage = threadResponse;
+            _selectedSession?.title = threadResponse.content;
             scrollToBottom();
           } else if (threadResponse is Thread) {
             _selectedSession?.threadId = threadResponse.id;
