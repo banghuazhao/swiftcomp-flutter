@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:domain/domain.dart';
 import 'package:domain/entities/tool_creation_requests.dart';
-import 'package:domain/entities/message.dart';
 import 'package:domain/entities/thread.dart';
 import 'package:domain/entities/thread_response.dart';
 import 'package:domain/entities/user.dart';
@@ -16,13 +15,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 class ChatViewModel extends ChangeNotifier {
-  final ChatUseCase _chatUseCase;
   final ChatSessionUseCase _chatSessionUseCase;
-  final FunctionToolsUseCase _functionToolsUseCase;
   final AuthUseCase _authUseCase;
   final UserUseCase _userUserCase;
   final MessagesUseCase _messagesUseCase;
-  final ThreadsUseCase _threadsUseCase;
   final ThreadRunsUseCase _threadRunsUseCase;
   final CompositesToolsUseCase _toolsUseCase;
 
@@ -34,8 +30,8 @@ class ChatViewModel extends ChangeNotifier {
   bool isLoading = false;
 
   String? _errorMessage;
-  String? get errorMessage => _errorMessage;
 
+  String? get errorMessage => _errorMessage;
 
   List<ChatSession> sessions = [];
   ChatSession? _selectedSession;
@@ -68,13 +64,10 @@ class ChatViewModel extends ChangeNotifier {
     required ThreadsUseCase threadsUseCase,
     required ThreadRunsUseCase threadRunsUseCase,
     required CompositesToolsUseCase toolsUseCase,
-  })  : _chatUseCase = chatUseCase,
-        _chatSessionUseCase = chatSessionUseCase,
-        _functionToolsUseCase = functionToolsUseCase,
+  })  : _chatSessionUseCase = chatSessionUseCase,
         _authUseCase = authUseCase,
         _userUserCase = userUserCase,
         _messagesUseCase = messagesUseCase,
-        _threadsUseCase = threadsUseCase,
         _threadRunsUseCase = threadRunsUseCase,
         _toolsUseCase = toolsUseCase;
 
@@ -181,14 +174,20 @@ class ChatViewModel extends ChangeNotifier {
 
   Future<void> sendFirstMessageAndRun(Message newMessage) async {
     if (_selectedSession == null) return;
+
     messages.add(newMessage);
     setLoading(true);
     scrollToBottom();
+
+    messageStreamController = StreamController<Message>.broadcast();
+
     Message? finalMessage;
-    messageStreamController = StreamController.broadcast();
-    final subscription = _threadRunsUseCase
-        .createMessageAndRunStream(assistantId, newMessage.content)
-        .listen((ThreadResponse threadResponse) {
+
+    try {
+      final subscription = _threadRunsUseCase
+          .createMessageAndRunStream(assistantId, newMessage.content)
+          .listen(
+        (ThreadResponse threadResponse) {
           if (threadResponse is Message) {
             messageStreamController.add(threadResponse);
             finalMessage = threadResponse;
@@ -197,24 +196,22 @@ class ChatViewModel extends ChangeNotifier {
           } else if (threadResponse is Thread) {
             _selectedSession?.threadId = threadResponse.id;
           }
-    }, onError: (error) {
-      messageStreamController.add(error);
-      print('Error receiving messages: $error');
-    }, onDone: () {
-      print("stream is done, finalMessage: $finalMessage");
-    });
+        },
+        onError: (error) {
+          messageStreamController.addError(error);
+          print('Error receiving messages: $error');
+        },
+      );
 
-    await subscription.asFuture();
-
-    messageStreamController.close();
-
-    if (finalMessage != null) {
-      messages.add(finalMessage!);
-      saveSession();
-      await checkFunctionCall(finalMessage!);
+      await subscription.asFuture();
+    } finally {
+      messageStreamController.close();
+      if (finalMessage != null) {
+        messages.add(finalMessage!);
+        saveSession();
+      }
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   Future<void> sendMessageAndRun(Message newMessage) async {
@@ -225,86 +222,34 @@ class ChatViewModel extends ChangeNotifier {
     Message? finalMessage;
     messageStreamController = StreamController.broadcast();
     final String threadId = _selectedSession!.threadId!;
-    await _messagesUseCase.createMessage(threadId, newMessage.content);
-    final subscription = _threadRunsUseCase
-        .createRunStream(threadId, assistantId)
-        .listen((Message message) {
-      messageStreamController.add(message);
-      finalMessage = message;
-      scrollToBottom();
-    }, onError: (error) {
-      messageStreamController.add(error);
-      print('Error receiving messages: $error');
-    }, onDone: () {
-      print("stream is done, finalMessage: $finalMessage");
-    });
+    try {
+      await _messagesUseCase.createMessage(threadId, newMessage.content);
+      final subscription = _threadRunsUseCase
+          .createRunStream(threadId, assistantId)
+          .listen((Message message) {
+        messageStreamController.add(message);
+        finalMessage = message;
+        scrollToBottom();
+      }, onError: (error) {
+        messageStreamController.add(error);
+        print('Error receiving messages: $error');
+      }, onDone: () {
+        print("stream is done, finalMessage: $finalMessage");
+      });
 
-    await subscription.asFuture();
-
-    messageStreamController.close();
-
-    if (finalMessage != null) {
-      messages.add(finalMessage!);
-      saveSession();
-      await checkFunctionCall(finalMessage!);
+      await subscription.asFuture();
+    } finally {
+      messageStreamController.close();
+      if (finalMessage != null) {
+        messages.add(finalMessage!);
+        saveSession();
+      }
+      setLoading(false);
     }
-
-    setLoading(false);
-  }
-
-  Future<void> sendMessage(Message newMessage) async {
-    if (_selectedSession == null) return;
-    messages.add(newMessage);
-    setLoading(true);
-    scrollToBottom();
-
-    // Store the latest message
-    Message? finalMessage;
-
-    // Create a subscription to listen to the stream
-    messageStreamController = StreamController.broadcast();
-    final subscription = _chatUseCase
-        .sendMessage(newMessage, _selectedSession!)
-        .listen((Message message) {
-      // Add each streamed message to the stream controller and to the message list
-      messageStreamController.add(message);
-      finalMessage = message; // Update the latest message
-      scrollToBottom();
-    }, onError: (error) {
-      messageStreamController.add(error);
-      print('Error receiving messages: $error');
-      // Handle the error
-    }, onDone: () {
-      // Stream is done; this will trigger when the stream closes
-      print("stream is done, finalMessage: $finalMessage");
-    });
-
-    // Wait for the stream to finish
-    await subscription.asFuture();
-
-    print("stream is finished");
-
-    messageStreamController.close();
-
-    if (finalMessage != null) {
-      messages.add(finalMessage!);
-      saveSession();
-      await checkFunctionCall(finalMessage!);
-    }
-
-    setLoading(false);
   }
 
   void saveSession() {
     _selectedSession?.messages = [...messages];
-  }
-
-  Future<void> checkFunctionCall(Message message) async {
-    final tool = message.toolCalls?.first;
-    if (tool != null) {
-      final toolMessage = _functionToolsUseCase.handleToolCall(tool);
-      await sendMessage(toolMessage);
-    }
   }
 
   bool isUserMessage(Message message) {
@@ -320,9 +265,8 @@ class ChatViewModel extends ChangeNotifier {
     _setLoading(true);
     try {
       // First step: Make user an expert
-     tools = await _toolsUseCase.getAllTools();
-     return tools;
-
+      tools = await _toolsUseCase.getAllTools();
+      return tools;
     } catch (e) {
       tools = [];
       _errorMessage = "Failed to fetch tools: $e";
@@ -333,7 +277,6 @@ class ChatViewModel extends ChangeNotifier {
       _setLoading(false);
     }
   }
-
 }
 
 // Extension on the Message class
@@ -355,4 +298,3 @@ extension ChatContentExtension on Message {
     return contentText;
   }
 }
-

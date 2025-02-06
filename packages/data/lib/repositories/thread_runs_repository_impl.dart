@@ -49,6 +49,7 @@ class ThreadRunsRepositoryImpl implements ThreadRunsRepository {
       );
     }
 
+    var threadResponseEvent = ThreadResponseEvent.initial;
     final utf8DecodedStream = streamedResponse.stream.transform(utf8.decoder);
     String buffer = '';
     Message messageObj = Message(role: "assistant");
@@ -60,28 +61,42 @@ class ThreadRunsRepositoryImpl implements ThreadRunsRepository {
           lines.removeLast(); // Keep the last line as buffer for the next chunk
 
       for (var line in lines) {
-        if (line == '[DONE]') return;
-
         final jsonString = line.replaceFirst('data: ', '').trim();
+        if (jsonString.isEmpty) continue;
 
-        if (jsonString.isEmpty || jsonString.contains("event: ")) continue;
+        if (jsonString == '[DONE]') return;
 
-        if (!jsonString.contains("thread.message.delta")) {
+        if (jsonString.contains("event: thread.created")) {
+          threadResponseEvent = ThreadResponseEvent.threadCreated;
+          continue;
+        } else if (jsonString.contains("event: thread.run.created")) {
+          threadResponseEvent = ThreadResponseEvent.runCreated;
+          continue;
+        } else if (jsonString.contains("event: thread.message.created")) {
+          threadResponseEvent = ThreadResponseEvent.messageCreated;
+          continue;
+        } else if (jsonString.contains("event: thread.message.delta")) {
+          threadResponseEvent = ThreadResponseEvent.messageDelta;
+          continue;
+        } else if (jsonString.contains("event:")) {
+          threadResponseEvent = ThreadResponseEvent.other;
           continue;
         }
 
         try {
           final data = jsonDecode(jsonString);
-          final messageDelta = MessageDelta.fromJson(data);
+          if (threadResponseEvent == ThreadResponseEvent.messageDelta) {
+            final messageDelta = MessageDelta.fromJson(data);
 
-          // Set message ID if it’s empty
-          messageObj.id =
-          messageObj.id.isEmpty ? messageDelta.id : messageObj.id;
+            // Set message ID if it’s empty
+            messageObj.id =
+            messageObj.id.isEmpty ? messageDelta.id : messageObj.id;
 
-          // Append new content
-          if (messageDelta.delta.content.isNotEmpty) {
-            messageObj.content += messageDelta.delta.content.first.text.value;
-            yield messageObj;
+            // Append new content
+            if (messageDelta.delta.content.isNotEmpty) {
+              messageObj.content += messageDelta.delta.content.first.text.value;
+              yield messageObj;
+            }
           }
         } catch (e) {
           // Skip malformed JSON but log for debugging
@@ -123,62 +138,57 @@ class ThreadRunsRepositoryImpl implements ThreadRunsRepository {
     }
 
     var threadResponseEvent = ThreadResponseEvent.initial;
-    final utf8DecodedStream = streamedResponse.stream.transform(utf8.decoder);
-    String buffer = '';
     Message messageObj = Message(role: "assistant");
 
-    await for (var chunk in utf8DecodedStream) {
-      buffer += chunk;
-      List<String> lines = buffer.split('\n');
-      buffer =
-          lines.removeLast(); // Keep the last line as buffer for the next chunk
+    await for (final line in streamedResponse.stream
+        .transform(utf8.decoder)
+        .transform(const LineSplitter())) {
+      final jsonString = line.replaceFirst('data: ', '').trim();
+      if (jsonString.isEmpty) continue;
 
-      for (var line in lines) {
-        if (line == '[DONE]') return;
-        if (line.contains("event: thread.created")) {
-          threadResponseEvent = ThreadResponseEvent.threadCreated;
-          continue;
-        } else if (line.contains("event: thread.run.created")) {
-          threadResponseEvent = ThreadResponseEvent.runCreated;
-          continue;
-        } else if (line.contains("event: thread.message.created")) {
-          threadResponseEvent = ThreadResponseEvent.messageCreated;
-          continue;
-        } else if (line.contains("event: thread.message.delta")) {
-          threadResponseEvent = ThreadResponseEvent.messageDelta;
-          continue;
-        } else if (line.contains("event:")) {
-          threadResponseEvent = ThreadResponseEvent.other;
-          continue;
+      if (jsonString == '[DONE]') return;
+
+      // Handle event lines
+      if (jsonString.startsWith("event:")) {
+        final eventName = jsonString.substring("event:".length).trim();
+        switch (eventName) {
+          case 'thread.created':
+            threadResponseEvent = ThreadResponseEvent.threadCreated;
+            break;
+          case 'thread.run.created':
+            threadResponseEvent = ThreadResponseEvent.runCreated;
+            break;
+          case 'thread.message.created':
+            threadResponseEvent = ThreadResponseEvent.messageCreated;
+            break;
+          case 'thread.message.delta':
+            threadResponseEvent = ThreadResponseEvent.messageDelta;
+            break;
+          default:
+            threadResponseEvent = ThreadResponseEvent.other;
         }
+        continue;
+      }
 
-        final jsonString = line.replaceFirst('data: ', '').trim();
+      try {
+        final data = jsonDecode(jsonString);
+        if (threadResponseEvent == ThreadResponseEvent.messageDelta) {
+          final messageDelta = MessageDelta.fromJson(data);
 
-        if (jsonString.isEmpty) continue;
-
-        try {
-          final data = jsonDecode(jsonString);
-
-          if (threadResponseEvent == ThreadResponseEvent.messageDelta) {
-            final messageDelta = MessageDelta.fromJson(data);
-
-            // Set message ID if it’s empty
-            messageObj.id =
-            messageObj.id.isEmpty ? messageDelta.id : messageObj.id;
-
-            // Append new content
-            if (messageDelta.delta.content.isNotEmpty) {
-              messageObj.content += messageDelta.delta.content.first.text.value;
-              yield messageObj;
-            }
-          } else if (threadResponseEvent == ThreadResponseEvent.threadCreated) {
-            final thread = Thread.fromJson(data);
-            yield thread;
+          messageObj.id =
+          messageObj.id.isEmpty ? messageDelta.id : messageObj.id;
+          if (messageDelta.delta.content.isNotEmpty) {
+            messageObj.content =  messageObj.content +
+                  messageDelta.delta.content.first.text.value;
+            yield messageObj;
           }
-        } catch (e) {
-          // Skip malformed JSON but log for debugging
-          print("Error parsing JSON: $e, Data: $jsonString");
+        } else if (threadResponseEvent == ThreadResponseEvent.threadCreated) {
+          final thread = Thread.fromJson(data);
+          yield thread;
         }
+      } catch (e) {
+        // Consider using a logging framework here
+        print("Error parsing JSON: $e, Data: $jsonString");
       }
     }
   }

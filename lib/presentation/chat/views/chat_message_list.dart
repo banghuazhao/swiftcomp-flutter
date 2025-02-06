@@ -124,7 +124,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
             alignment: Alignment.centerRight,
             child: Container(
               constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.6, // Half the screen width
+                maxWidth: max(280, MediaQuery.of(context).size.width * 0.6), // Half the screen width
               ),
               margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
@@ -155,18 +155,38 @@ class _ChatMessageListState extends State<ChatMessageList> {
       }
     }
 
-    result.add(StreamBuilder<Message>(
-        stream: viewModel.messageStreamController.stream,
-        builder: (context, snapshot) {
-          return Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-                  child: streamWidget(snapshot)));
-        }));
+    result.add(
+        messageStream(viewModel)
+    );
 
     return result;
   }
+
+  StreamBuilder<Message> messageStream(ChatViewModel viewModel) {
+    return StreamBuilder<Message>(
+      stream: viewModel.messageStreamController.stream,
+      builder: (context, snapshot) {
+        return Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                child: streamWidget(snapshot)));
+      });
+  }
+
+  Widget streamWidget(AsyncSnapshot<Message> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return Text("●"); // Loading indicator while waiting for data
+    } else if (snapshot.hasError) {
+      return Text('Error: ${snapshot.error}'); // Display error message
+    } else if (snapshot.data != null) {
+      final message = snapshot.data!;
+      return MarkdownWithMath(markdownData: message.chatContent + " ●");
+    } else {
+      return Container();
+    }
+  }
+
 
   Widget inputBar(ChatViewModel viewModel) {
     return Padding(
@@ -252,19 +272,6 @@ class _ChatMessageListState extends State<ChatMessageList> {
         ),
       ),
     );
-  }
-
-  Widget streamWidget(AsyncSnapshot<Message> snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return Text("●"); // Loading indicator while waiting for data
-    } else if (snapshot.hasError) {
-      return Text('Error: ${snapshot.error}'); // Display error message
-    } else if (snapshot.data != null) {
-      final message = snapshot.data!;
-      return MarkdownWithMath(markdownData: message.chatContent + " ●");
-    } else {
-      return Container();
-    }
   }
 }
 
