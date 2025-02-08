@@ -229,7 +229,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
             markdownData: "${threadResponse.chatContent} ●");
       } else {
         return BlinkingText(
-          text: "Thinking",
+          text: "Thinking...",
           style: TextStyle(fontSize: 16.0), // Customize the style as needed
         );
       }
