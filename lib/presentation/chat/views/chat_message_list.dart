@@ -179,13 +179,13 @@ class _ChatMessageListState extends State<ChatMessageList> {
             children: [
               IconButton(
                 icon: viewModel.isCopyingMessage
-                    ? Icon(Icons.check)
-                    : Icon(Icons.copy),
+                    ? Icon(Icons.check, size: 20) // Adjust size for the check icon
+                    : Icon(Icons.copy, size: 18), // Adjust size for the copy icon
                 onPressed: viewModel.isCopyingMessage
                     ? null
                     : () async {
-                        viewModel.copyMessage(text);
-                      },
+                  viewModel.copyMessage(text);
+                },
               ),
               if (viewModel.isCopyingMessage) Text("Copied")
               // You can add other buttons here if needed, e.g. thumbs up/down, etc.
