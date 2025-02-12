@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:domain/domain.dart';
-import 'package:domain/entities/thread.dart';
 import 'package:domain/entities/thread_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -161,7 +160,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
                 color: Colors.grey[300],
                 borderRadius: BorderRadius.circular(20.0),
               ),
-              child: Text(
+              child: SelectableText(
                 message.content ?? "",
                 style: const TextStyle(
                   fontSize: 15,
