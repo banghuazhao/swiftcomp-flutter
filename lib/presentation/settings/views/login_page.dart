@@ -200,6 +200,62 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void _linkedinSignIn(LoginViewModel viewModel, BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent closing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(), // Display loading indicator
+        );
+      },
+    );
+
+    try {
+      // Perform Google Sign-In
+      await viewModel.signInWithLinkedin();
+
+      // Dismiss loading dialog before performing further actions
+      Navigator.of(context, rootNavigator: true).pop();
+
+      // Check the result of the sign-in
+      if (viewModel.isSigningIn) {
+        // Display success Snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Logged in with Linkedin"),
+            duration: Duration(seconds: 2),
+            backgroundColor: Colors.black,
+          ),
+        );
+
+        // Navigate to the next screen
+        Navigator.pop(context, "Log in Success"); // Pop the current screen
+      } else {
+        // Display failure Snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(viewModel.errorMessage ?? "Linkedin Sign-In failed"),
+            duration: Duration(seconds: 2),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      // Handle any unexpected errors
+      Navigator.of(context, rootNavigator: true).pop(); // Dismiss loading dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("An error occurred: $e"),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+
+  }
+
+
 
   @override
   void dispose() {
@@ -387,7 +443,13 @@ class _LoginPageState extends State<LoginPage> {
                             text: 'Continue with Google',
                             onPressed: () => _googleSignIn(viewModel, context),
                           ),
-                          const SizedBox(height: 10), // Space between buttons
+                          const SizedBox(height: 10),
+                          _buildSocialButton(
+                            iconPath: 'images/linkedin_logo.png',
+                            text: 'Continue with Linkedin',
+                            onPressed: () => _linkedinSignIn(viewModel, context),
+                          ),// Space between buttons
+                          const SizedBox(height: 10),
                           _buildSocialButton(
                             iconPath: 'images/apple_logo.png',
                             text: 'Continue with Apple',
