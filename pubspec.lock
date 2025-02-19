@@ -595,7 +595,7 @@ packages:
     source: hosted
     version: "0.4.0"
   linkedin_login:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: linkedin_login
       sha256: aec7676775fa0a7f0c81bd0fab42bb292f8bc1f9f0bad3243e00c9d9c8b986e1
