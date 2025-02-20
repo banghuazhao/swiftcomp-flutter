@@ -21,6 +21,7 @@ abstract class AuthUseCase {
   Future<bool> isLoggedIn();
   Future<String> handleAuthorizationCodeFromLinked(String? authorizationCode);
   Future<LinkedinUserProfile> fetchLinkedInUserProfile(String? accessToken);
+  Future<void> signInWithLinkedIn();
 }
 
 class AuthUseCaseImpl implements AuthUseCase {
@@ -98,6 +99,9 @@ class AuthUseCaseImpl implements AuthUseCase {
 
   Future<LinkedinUserProfile> fetchLinkedInUserProfile(String? accessToken) async {
     return await repository.fetchLinkedInUserProfile(accessToken);
+  }
+  Future<void> signInWithLinkedIn() async {
+    return await repository.signInWithLinkedIn();
   }
 
 

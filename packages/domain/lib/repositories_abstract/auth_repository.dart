@@ -16,4 +16,5 @@ abstract class AuthRepository {
   Future<bool> validateGoogleToken(String idToken);
   Future<String> handleAuthorizationCodeFromLinked(String? authorizationCode);
   Future<LinkedinUserProfile> fetchLinkedInUserProfile(String? accessToken);
+  Future<void> signInWithLinkedIn();
 }

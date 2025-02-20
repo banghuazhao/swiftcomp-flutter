@@ -187,45 +187,10 @@ class LoginViewModel extends ChangeNotifier {
   Future<void> signInWithLinkedin() async {
     _isSigningIn = false;
     _errorMessage = null;
-
-    final String clientId = dotenv.env['LINKEDIN_CLIENT_ID'] ?? '';
-    const String redirectUrlWeb = 'https://compositesai.com/auth/linkedin/callback';
-    const String redirectUrlMobile = 'https://compositesai.com/linkedin-auth';
-    const String redirectUrlDevelopment = 'http://localhost:5000/auth/linkedin/callback';
-
-    // Detect if the environment is production or development
-    final bool isProduction = dotenv.env['FLUTTER_ENV'] == 'production';
-
-    // Select the appropriate redirect URL based on environment and platform
-    final String redirectUrl = isProduction
-        ? (kIsWeb ? redirectUrlWeb : redirectUrlMobile) // Production URLs
-        : redirectUrlDevelopment; // Development URL
-
     try {
-      // **Step 1: Open LinkedIn Login Page**
-      final Uri authUri = Uri.https(
-        'www.linkedin.com',
-        '/oauth/v2/authorization',
-        {
-          'response_type': 'code',
-          'client_id': clientId,
-          'scope': 'openid profile email',
-          'redirect_uri': redirectUrl,
-        },
-      );
-      if (kIsWeb) {
-        html.window.location.href = authUri.toString();
-      } else {
-        if (await canLaunchUrl(authUri)) {
-          // This opens the URL in the browser (GET request happens automatically)
-          await launchUrl(authUri, mode: LaunchMode.inAppWebView);
-        } else {
-          throw Exception("Could not launch LinkedIn login page");
-        }
-      }
+      await authUseCase.signInWithLinkedIn();
     } catch (error) {
       _errorMessage = "LinkedIn Sign-In Failed: $error";
-      notifyListeners();
     }
   }
 

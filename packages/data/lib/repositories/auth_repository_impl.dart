@@ -11,6 +11,9 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:infrastructure/api_environment.dart';
 import 'package:infrastructure/authenticated_http_client.dart';
+import 'dart:html' as html;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final http.Client client;
@@ -308,4 +311,40 @@ class AuthRepositoryImpl implements AuthRepository {
       throw Exception(response.statusCode);
     }
   }
+
+  Future<void> signInWithLinkedIn() async {
+    final String clientId = dotenv.env['LINKEDIN_CLIENT_ID'] ?? '';
+    const String redirectUrlWeb = 'https://compositesai.com/auth/linkedin/callback';
+    const String redirectUrlMobile = 'https://compositesai.com/linkedin-auth';
+    const String redirectUrlDevelopment = 'http://localhost:5000/auth/linkedin/callback';
+
+    final bool isProduction = dotenv.env['FLUTTER_ENV'] == 'production';
+    final String redirectUrl = isProduction ? (kIsWeb ? redirectUrlWeb : redirectUrlMobile) : redirectUrlDevelopment;
+
+    try {
+      final Uri authUri = Uri.https(
+        'www.linkedin.com',
+        '/oauth/v2/authorization',
+        {
+          'response_type': 'code',
+          'client_id': clientId,
+          'scope': 'openid profile email',
+          'redirect_uri': redirectUrl,
+        },
+      );
+
+      if (kIsWeb) {
+        html.window.location.href = authUri.toString();
+      } else {
+        if (await canLaunchUrl(authUri)) {
+          await launchUrl(authUri, mode: LaunchMode.inAppWebView);
+        } else {
+          throw Exception("Could not launch LinkedIn login page");
+        }
+      }
+    } catch (error) {
+      throw Exception("LinkedIn Sign-In Failed: $error");
+    }
+  }
+
 }
