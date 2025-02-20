@@ -184,10 +184,19 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   // LinkedIn Credentials
-  static const String clientId = '86qaow3mt03cac';
-  static const String redirectUrlWeb = 'http://localhost:5000/auth/linkedin/callback';
+  static final String clientId = dotenv.env['LINKEDIN_CLIENT_ID'] ?? '';
+  static const String redirectUrlWeb = 'https://compositesai.com/auth/linkedin/callback';
   static const String redirectUrlMobile = 'https://compositesai.com/linkedin-auth';
-  static final String redirectUrl = kIsWeb ? redirectUrlWeb : redirectUrlMobile;
+  static const String redirectUrlDevelopment = 'http://localhost:5000/auth/linkedin/callback';
+
+  // Detect if the environment is production or development
+  static final bool isProduction = dotenv.env['FLUTTER_ENV'] == 'production';
+
+  // Select the appropriate redirect URL based on environment and platform
+  static final String redirectUrl = isProduction
+      ? (kIsWeb ? redirectUrlWeb : redirectUrlMobile) // Production URLs
+      : redirectUrlDevelopment; // Development URL
+
 
   Future<void> signInWithLinkedin() async {
     _isSigningIn = false;
