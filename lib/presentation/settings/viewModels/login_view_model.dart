@@ -22,9 +22,10 @@ class LoginViewModel extends ChangeNotifier {
   final AppleSignInService appleSignInService;
   final GoogleSignInService googleSignInService;
 
-  LoginViewModel({required this.authUseCase,
-    required this.appleSignInService,
-    required this.googleSignInService});
+  LoginViewModel(
+      {required this.authUseCase,
+      required this.appleSignInService,
+      required this.googleSignInService});
 
   bool _isLoading = false;
 
@@ -88,12 +89,12 @@ class LoginViewModel extends ChangeNotifier {
       // Initialize GoogleSignIn instance
       final GoogleSignInUser? user = kIsWeb
           ? await googleSignInService.signIn(
-        clientId: GOOGLE_SIGNIN_CLIENT_ID_WEB,
-        scopes: <String>['email', 'openid', 'profile'],
-      )
+              clientId: GOOGLE_SIGNIN_CLIENT_ID_WEB,
+              scopes: <String>['email', 'openid', 'profile'],
+            )
           : await googleSignInService.signIn(
-        scopes: <String>['email', 'openid', 'profile'],
-      );
+              scopes: <String>['email', 'openid', 'profile'],
+            );
 
       print(user);
 
@@ -155,8 +156,8 @@ class LoginViewModel extends ChangeNotifier {
           redirectUri: kIsWeb //This is where Apple sends the user back after they sign in.
               ? Uri.parse('https://compositesai.com')
               : Uri.parse(
-            'https://flutter-sign-in-with-apple-example.glitch.me/callbacks/sign_in_with_apple',
-          ),
+                  'https://flutter-sign-in-with-apple-example.glitch.me/callbacks/sign_in_with_apple',
+                ),
         ),
       );
 
@@ -183,25 +184,22 @@ class LoginViewModel extends ChangeNotifier {
     }
   }
 
-  // LinkedIn Credentials
-  static final String clientId = dotenv.env['LINKEDIN_CLIENT_ID'] ?? '';
-  static const String redirectUrlWeb = 'https://compositesai.com/auth/linkedin/callback';
-  static const String redirectUrlMobile = 'https://compositesai.com/linkedin-auth';
-  static const String redirectUrlDevelopment = 'http://localhost:5000/auth/linkedin/callback';
-
-  // Detect if the environment is production or development
-  static final bool isProduction = dotenv.env['FLUTTER_ENV'] == 'production';
-
-  // Select the appropriate redirect URL based on environment and platform
-  static final String redirectUrl = isProduction
-      ? (kIsWeb ? redirectUrlWeb : redirectUrlMobile) // Production URLs
-      : redirectUrlDevelopment; // Development URL
-
-
   Future<void> signInWithLinkedin() async {
     _isSigningIn = false;
     _errorMessage = null;
 
+    final String clientId = dotenv.env['LINKEDIN_CLIENT_ID'] ?? '';
+    const String redirectUrlWeb = 'https://compositesai.com/auth/linkedin/callback';
+    const String redirectUrlMobile = 'https://compositesai.com/linkedin-auth';
+    const String redirectUrlDevelopment = 'http://localhost:5000/auth/linkedin/callback';
+
+    // Detect if the environment is production or development
+    final bool isProduction = dotenv.env['FLUTTER_ENV'] == 'production';
+
+    // Select the appropriate redirect URL based on environment and platform
+    final String redirectUrl = isProduction
+        ? (kIsWeb ? redirectUrlWeb : redirectUrlMobile) // Production URLs
+        : redirectUrlDevelopment; // Development URL
 
     try {
       // **Step 1: Open LinkedIn Login Page**
@@ -230,7 +228,6 @@ class LoginViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 
   /// **2️⃣ Handle Redirect and Exchange Authorization Code for Access Token**
   Future<String?> _waitForAuthorizationCode() async {
@@ -280,7 +277,4 @@ class LoginViewModel extends ChangeNotifier {
 
     return completer.future;
   }
-
-
-
 }
