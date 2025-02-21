@@ -312,39 +312,29 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  Future<void> signInWithLinkedIn() async {
+  Future<Uri> getAuthUrl() async {
     final String clientId = dotenv.env['LINKEDIN_CLIENT_ID'] ?? '';
     const String redirectUrlWeb = 'https://compositesai.com/auth/linkedin/callback';
     const String redirectUrlMobile = 'https://compositesai.com/linkedin-auth';
     const String redirectUrlDevelopment = 'http://localhost:5000/auth/linkedin/callback';
 
-    final bool isProduction = dotenv.env['FLUTTER_ENV'] == 'production';
-    final String redirectUrl = isProduction ? (kIsWeb ? redirectUrlWeb : redirectUrlMobile) : redirectUrlDevelopment;
-
-    try {
-      final Uri authUri = Uri.https(
-        'www.linkedin.com',
-        '/oauth/v2/authorization',
-        {
-          'response_type': 'code',
-          'client_id': clientId,
-          'scope': 'openid profile email',
-          'redirect_uri': redirectUrl,
-        },
-      );
-
-      if (kIsWeb) {
-        html.window.location.href = authUri.toString();
-      } else {
-        if (await canLaunchUrl(authUri)) {
-          await launchUrl(authUri, mode: LaunchMode.inAppWebView);
-        } else {
-          throw Exception("Could not launch LinkedIn login page");
-        }
-      }
-    } catch (error) {
-      throw Exception("LinkedIn Sign-In Failed: $error");
+    final String currentEnv = await apiEnvironment.getCurrentEnvironment();
+    final String redirectUrl;
+    if (currentEnv == 'production') {
+      redirectUrl = kIsWeb ? redirectUrlWeb : redirectUrlMobile;
+    } else {
+      redirectUrl = redirectUrlDevelopment;
     }
+    return Uri.https(
+      'www.linkedin.com',
+      '/oauth/v2/authorization',
+      {
+        'response_type': 'code',
+        'client_id': clientId,
+        'scope': 'openid profile email',
+        'redirect_uri': redirectUrl,
+      },
+    );
   }
 
 }

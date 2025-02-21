@@ -44,10 +44,6 @@ class LoginViewModel extends ChangeNotifier {
   bool _isSigningIn = false;
 
   bool get isSigningIn => _isSigningIn;
-  String? _accessToken;
-  Map<String, dynamic>? _userProfile;
-
-  Map<String, dynamic>? get userProfile => _userProfile;
 
   void togglePasswordVisibility() {
     obscureText = !obscureText;
@@ -188,9 +184,18 @@ class LoginViewModel extends ChangeNotifier {
     _isSigningIn = false;
     _errorMessage = null;
     try {
-      await authUseCase.signInWithLinkedIn();
+      final Uri authUri = await authUseCase.getAuthUrl();
+      if (kIsWeb) {
+        html.window.location.href = authUri.toString();
+      } else {
+        if (await canLaunchUrl(authUri)) {
+          await launchUrl(authUri, mode: LaunchMode.inAppWebView);
+        } else {
+          throw Exception("Could not launch LinkedIn login page");
+        }
+      }
     } catch (error) {
-      _errorMessage = "LinkedIn Sign-In Failed: $error";
+      throw Exception("LinkedIn Sign-In Failed: $error");
     }
   }
 
