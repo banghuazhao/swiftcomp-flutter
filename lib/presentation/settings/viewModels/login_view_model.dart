@@ -1,10 +1,7 @@
 // lib/presentation/viewmodels/login_view_model.dart
 
 import 'dart:async';
-import 'dart:convert';
-import 'dart:html';
-import 'dart:html' as html;
-import 'dart:math';
+import 'package:web/web.dart' as web;
 
 import 'package:flutter/foundation.dart';
 import 'package:domain/usecases/auth_usecase.dart';
@@ -15,7 +12,6 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-import 'package:domain/entities/linkedinuserprofile.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final AuthUseCase authUseCase;
@@ -186,7 +182,7 @@ class LoginViewModel extends ChangeNotifier {
     try {
       final Uri authUri = await authUseCase.getAuthUrl();
       if (kIsWeb) {
-        html.window.location.href = authUri.toString();
+        web.window.location.href = authUri.toString();
       } else {
         if (await canLaunchUrl(authUri)) {
           await launchUrl(authUri, mode: LaunchMode.inAppWebView);
