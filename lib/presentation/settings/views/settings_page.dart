@@ -26,6 +26,9 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   late SettingsViewModel viewModel;
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
 
   @override
   void initState() {
@@ -40,11 +43,42 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final result = ModalRoute.of(context)?.settings.arguments;
+    if (result == "Log in Success") {
+      _showLoadingIndicator();
+    }
+  }
+
+  void _showLoadingIndicator() {
+    setState(() {
+      _isLoading = true;
+    });
+
+    // ✅ Keep the indicator active until authentication is refreshed
+    Future.delayed(Duration(seconds: 2), () async {
+      await _fetchAuthSession();
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Logged in with LinkedIn"),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.black,
+        ),
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<SettingsViewModel>(
-      // listen to changes in SettingsViewModel
       builder: (context, viewModel, _) {
-        //If every part of the widget depends on the state or changes dynamically, there’s no need to pass a child. Let the Consumer rebuild the entire widget tree.
         return Scaffold(
           appBar: AppBar(title: const Text("Settings")),
           body: ProgressHUD(
@@ -52,27 +86,32 @@ class _SettingsPageState extends State<SettingsPage> {
               builder: (context) => ListView(
                 children: [
                   if (!viewModel.isLoggedIn)
-                    MoreRow(
-                      title: "Login",
-                      leadingIcon: Icons.person_rounded,
-                      onTap: () async {
-                        String? result = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
+                    viewModel.isLoading
+                        ? Container(
+                            margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                            child: Center(child: const CircularProgressIndicator()),
+                          )
+                        : MoreRow(
+                            title: "Login",
+                            leadingIcon: Icons.person_rounded,
+                            onTap: () async {
+                              String? result = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginPage(),
+                                ),
+                              );
+                              if (result == "Log in Success") {
+                                await viewModel.fetchAuthSessionNew();
+                              }
+                            },
                           ),
-                        );
-                        if (result == "Log in Success") {
-                          await viewModel.fetchAuthSessionNew();
-                        }
-                      },
-                    ),
                   if (viewModel.isLoggedIn)
                     ListTile(
                       key: ValueKey(viewModel.user?.name ?? ""),
                       leading: viewModel.user?.avatarUrl != null
                           ? CircleAvatar(
-                              radius: 22.5, // Adjust the radius to match the icon size
+                              radius: 22.5,
                               backgroundColor: Colors.transparent,
                               child: ClipOval(
                                 child: CachedNetworkImage(
@@ -101,15 +140,13 @@ class _SettingsPageState extends State<SettingsPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          if (viewModel.user?.isCompositeExpert ==
-                              true) // Check if the user is verified
+                          if (viewModel.user?.isCompositeExpert == true)
                             Padding(
                               padding: const EdgeInsets.only(left: 4.0),
-                              // Add spacing between name and icon
                               child: Icon(
-                                Icons.verified, // Use a verified checkmark icon
-                                color: Colors.blue, // Make it blue to represent verification
-                                size: 16, // Adjust the size to fit nicely
+                                Icons.verified,
+                                color: Colors.blue,
+                                size: 16,
                               ),
                             ),
                         ],
@@ -130,7 +167,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       leadingIcon: Icons.construction_rounded,
                       title: "Manage Expert Application",
                       onTap: () async {
-                        final result = await Navigator.push(
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => ChangeNotifierProvider(
@@ -148,14 +185,14 @@ class _SettingsPageState extends State<SettingsPage> {
                       leadingIcon: Icons.add_chart_outlined,
                       title: "Manage Tool Creation Request",
                       onTap: () async {
-                        final result = await Navigator.push(
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => ChangeNotifierProvider(
                                 create: (_) => CompositesToolsViewModel(
-                                    toolUseCase: sl(),
-                                    user: viewModel.user!,
-                                  ),
+                                      toolUseCase: sl(),
+                                      user: viewModel.user!,
+                                    ),
                                 child: ToolCreationRequestPage()),
                           ),
                         );
@@ -166,7 +203,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       leadingIcon: Icons.account_box_outlined,
                       title: "Request to Become an Expert",
                       onTap: () async {
-                        final result = await Navigator.push(
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => ApplyExpertPage(),
@@ -191,7 +228,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: "Rate this App",
                     leadingIcon: Icons.thumb_up_rounded,
                     onTap: () {
-                      print("Rate App button tapped"); // Debug print
+                      print("Rate App button tapped");
                       viewModel.rateApp();
                     },
                   ),
