@@ -438,31 +438,7 @@ class _LoginPageState extends State<LoginPage> {
                             iconPath: 'images/linkedin_logo.png',
                             text: 'Continue with Linkedin',
                             onPressed: () => _linkedinSignIn(viewModel, context),
-                          ),// Space between buttons
-                          // _buildSocialButton(
-                          //   iconPath: 'images/linkedin_logo.png',
-                          //   text: 'Continue with Linkedin',
-                          //   onPressed: () {
-                          //     Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //         builder: (context) => LinkedInUserWidget(
-                          //           redirectUrl: "http://localhost:5000/auth/linkedin/callbac",
-                          //           clientId: "86qaow3mt03cac",
-                          //           clientSecret: "WPL_AP1.PpTXkzhjiNreIsOQ.gkbYjQ==",
-                          //           onGetUserProfile: (UserSucceededAction linkedInUser) {
-                          //             print('Access token ${linkedInUser.user.token}');
-                          //             print('First name: ${linkedInUser.user.givenName}');
-                          //             print('Last name: ${linkedInUser.user.familyName}');
-                          //           },
-                          //           onError: (UserFailedAction e) {
-                          //             print('Error: ${e.toString()}');
-                          //           },
-                          //         ),
-                          //       ),
-                          //     );
-                          //   },
-                          // ),
+                          ),
                           const SizedBox(height: 10),
                           _buildSocialButton(
                             iconPath: 'images/apple_logo.png',
@@ -471,7 +447,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 15.0),
 
                       // Forgot Password Button

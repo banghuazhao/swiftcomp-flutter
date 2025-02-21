@@ -272,36 +272,3 @@ class SettingsViewModel extends ChangeNotifier {
     await authUseCase.syncUser(displayName, email, photoUrl);
   }
 }
-/*Future<LinkedinUserProfile> fetchLinkedInUserProfile(String? _accessToken) async {
-  if (_accessToken == null) {
-    throw Exception("Access token is missing.");
-  }
-
-  // **Step 1: Fetch Basic Profile**
-  final profileResponse = await http.get(
-    Uri.parse("https://api.linkedin.com/v2/me"),
-    headers: {"Authorization": "Bearer $_accessToken", "Content-Type": "application/json"},
-  );
-
-  // **Step 2: Fetch Email Address**
-  final emailResponse = await http.get(
-    Uri.parse(
-        "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))"),
-    headers: {"Authorization": "Bearer $_accessToken", "Content-Type": "application/json"},
-  );
-
-  if (profileResponse.statusCode == 200 && emailResponse.statusCode == 200) {
-    final profileData = jsonDecode(profileResponse.body);
-    final emailData = jsonDecode(emailResponse.body);
-
-    return LinkedinUserProfile(
-      email: emailData["elements"][0]["handle~"]["emailAddress"] ?? "",
-      name: profileData["localizedFirstName"] + " " + profileData["localizedLastName"],
-      picture: profileData["profilePicture"]?["displayImage~"]?["elements"]
-          ?.last["identifiers"]
-          ?.first["identifier"],
-    );
-  } else {
-    throw Exception("Failed to fetch LinkedIn user profile.");
-  }
-}*/
