@@ -43,39 +43,6 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    final result = ModalRoute.of(context)?.settings.arguments;
-    if (result == "Log in Success") {
-      _showLoadingIndicator();
-    }
-  }
-
-  void _showLoadingIndicator() {
-    setState(() {
-      _isLoading = true;
-    });
-
-    // ✅ Keep the indicator active until authentication is refreshed
-    Future.delayed(Duration(seconds: 2), () async {
-      await _fetchAuthSession();
-
-      setState(() {
-        _isLoading = false;
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Logged in with LinkedIn"),
-          duration: Duration(seconds: 2),
-          backgroundColor: Colors.black,
-        ),
-      );
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Consumer<SettingsViewModel>(
       builder: (context, viewModel, _) {
