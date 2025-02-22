@@ -108,7 +108,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 28),
+            const SizedBox(height: 36),
 
             // Input Bar only on Web
             if (kIsWeb) inputBar(viewModel),
