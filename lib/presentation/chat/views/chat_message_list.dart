@@ -248,7 +248,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
           if (!(message.isLiked ?? false))
             IconButton(
               icon: message.isDisliked ?? false
-                  ? Icon(Icons.thumb_down, size: 15, color: Colors.grey[800])
+                  ? Icon(Icons.thumb_down, size: 15, color: Colors.grey[700])
                   : const Icon(Icons.thumb_down_outlined, size: 15),
               onPressed: () {
                 viewModel.toggleMessageDislike(message);
