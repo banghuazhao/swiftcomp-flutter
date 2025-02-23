@@ -233,7 +233,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
           if (!(message.isDisliked ?? false))
             IconButton(
               icon: message.isLiked ?? false
-                  ? const Icon(Icons.thumb_up, size: 15, color: Colors.blue)
+                  ? Icon(Icons.thumb_up, size: 15, color: Colors.grey[700])
                   : const Icon(Icons.thumb_up_outlined, size: 15),
               onPressed: () {
                 viewModel.toggleMessageLike(message);
@@ -248,7 +248,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
           if (!(message.isLiked ?? false))
             IconButton(
               icon: message.isDisliked ?? false
-                  ? const Icon(Icons.thumb_down, size: 15, color: Colors.red)
+                  ? Icon(Icons.thumb_down, size: 15, color: Colors.grey[800])
                   : const Icon(Icons.thumb_down_outlined, size: 15),
               onPressed: () {
                 viewModel.toggleMessageDislike(message);
