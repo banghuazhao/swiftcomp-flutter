@@ -64,89 +64,99 @@ class _ChatMessageListState extends State<ChatMessageList> {
 
   Widget defaultQuestionView(ChatViewModel viewModel) {
     return SingleChildScrollView(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(height: 30), // More spacing from the top
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Logo with rounded corners
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  'images/Icon-512.png', // Path to your image
-                  width: 40,
-                  height: 40,
-                ),
-              ),
-              const SizedBox(width: 10), // More spacing for a balanced look
-              Flexible(
-                // Prevents text from overflowing
-                child: Text(
-                  "Hi, I am Composites AI",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.normal, // Make it stand out
-                    color: Colors.black87, // Slightly softer than pure black
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 30), // More spacing from the top
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Logo with rounded corners
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    'images/Icon-512.png', // Path to your image
+                    width: 40,
+                    height: 40,
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ),
-            ],
+                const SizedBox(width: 10), // More spacing for a balanced look
+                Flexible(
+                  child: Text(
+                    "Hi, I am Composites AI",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black87,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 24),
-        Text(
-          "How can I help you today?",
-          style: TextStyle(
-            fontSize: 28, // Slightly larger for better readability
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
+          const SizedBox(height: 24),
+          Text(
+            "How can I help you today?",
+            style: TextStyle(
+              fontSize: 28, // Slightly larger for better readability
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 36),
+          const SizedBox(height: 36),
 
-        // Input Bar only on Web
-        if (kIsWeb) inputBar(viewModel),
+          // Input Bar only on Web
+          if (kIsWeb)...[
+            inputBar(viewModel),
+           const SizedBox(height: 10),
+          ],
 
-        LayoutBuilder(
-          builder: (context, constraints) {
-            double width = constraints.maxWidth;
-            int crossAxisCount = max(width ~/ 200, 2);
-            return GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
-                childAspectRatio: 2,
-                crossAxisSpacing: 12.0, // More spacing
-                mainAxisSpacing: 12.0,
+          Center( // Center the grid
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 800, // Adjust as needed to keep it centered
               ),
-              itemCount: viewModel.defaultQuestions.length,
-              padding: const EdgeInsets.all(16),
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () async {
-                    await viewModel.onDefaultQuestionsTapped(index);
-                  },
-                  child: _buildDefaultQuestionCard(
-                      viewModel.defaultQuestions[index]),
-                );
-              },
-            );
-          },
-        ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  double width = constraints.maxWidth;
+                  int crossAxisCount = max(width ~/ 200, 2);
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 12.0,
+                      mainAxisSpacing: 12.0,
+                    ),
+                    itemCount: viewModel.defaultQuestions.length,
+                    padding: const EdgeInsets.all(16),
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () async {
+                          await viewModel.onDefaultQuestionsTapped(index);
+                        },
+                        child: _buildDefaultQuestionCard(
+                            viewModel.defaultQuestions[index]),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
 
-        const SizedBox(height: 30),
-      ],
-    ));
+          const SizedBox(height: 30),
+        ],
+      ),
+    );
   }
 
   List<Widget> chatList(BuildContext context, ChatViewModel viewModel) {
@@ -355,108 +365,129 @@ class _ChatMessageListState extends State<ChatMessageList> {
   }
 
   Widget inputBar(ChatViewModel viewModel) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(24.0),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: KeyboardListener(
-                focusNode: FocusNode(),
-                onKeyEvent: (KeyEvent event) {
-                  if (event is KeyDownEvent &&
-                      event.logicalKey == LogicalKeyboardKey.enter) {
-                    // Check if the Shift key is pressed
-                    final isShiftPressed = HardwareKeyboard
-                            .instance.logicalKeysPressed
-                            .contains(LogicalKeyboardKey.shiftLeft) ||
-                        HardwareKeyboard.instance.logicalKeysPressed
-                            .contains(LogicalKeyboardKey.shiftRight);
+    return Column(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.70,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24.0),
+            border: Border.all(color: Colors.grey.shade300),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: 15,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: KeyboardListener(
+                  focusNode: FocusNode(),
+                  onKeyEvent: (KeyEvent event) {
+                    if (event is KeyDownEvent &&
+                        event.logicalKey == LogicalKeyboardKey.enter) {
+                      final isShiftPressed = HardwareKeyboard.instance.logicalKeysPressed.contains(LogicalKeyboardKey.shiftLeft) ||
+                          HardwareKeyboard.instance.logicalKeysPressed.contains(LogicalKeyboardKey.shiftRight);
 
-                    if (isShiftPressed) {
-                      // Add a newline only when Shift + Enter is pressed
-                      final text = textController.text; // Clean up text
-                      textController.text = "$text\n";
-                      textController.selection = TextSelection.fromPosition(
-                        TextPosition(offset: textController.text.length),
-                      );
-                    } else if (!viewModel.isLoading) {
-                      // Submit the text and clear TextField on Enter
-                      final text =
-                          textController.text; // Remove extra spaces/newlines
-                      if (text.isNotEmpty) {
-                        textController.clear(); // Clear input immediately
-                        viewModel.sendInputMessage(text); // Send message
+                      if (isShiftPressed) {
+                        // Insert newline
+                        final text = textController.text;
+                        textController.text = "$text\n";
+                        textController.selection = TextSelection.fromPosition(
+                          TextPosition(offset: textController.text.length),
+                        );
+                      } else if (!viewModel.isLoading) {
+                        // Send message
+                        final text = textController.text.trim();
+                        if (text.isNotEmpty) {
+                          textController.clear();
+                          viewModel.sendInputMessage(text);
+                        }
                       }
+
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        focusNode.requestFocus();
+                      });
                     }
-                    // Defer the cursor position update to avoid timing issues
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      focusNode.requestFocus();
-                    });
-                  }
-                },
-                child: TextField(
-                  controller: textController,
-                  focusNode: focusNode,
-                  decoration: InputDecoration(
-                    hintText: 'Ask anything about Composites...',
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
+                  },
+                  child: TextField(
+                    controller: textController,
+                    focusNode: focusNode,
+                    decoration: InputDecoration(
+                      hintText: 'Ask anything about Composites...',
+                      hintStyle: TextStyle(color: Colors.grey.shade500),
+                      border: InputBorder.none,
+                    ),
+                    keyboardType: TextInputType.multiline,
+                    textInputAction: TextInputAction.done,
+                    minLines: 2,
+                    maxLines: 8,
+                    onChanged: (text) {
+                      setState(() {}); // Update UI for button state
+                    },
                   ),
-                  keyboardType: TextInputType.multiline,
-                  textInputAction: TextInputAction.done,
-                  // Treat Enter as Done
-                  maxLines: null,
-                  onChanged: (text) {
-                    setState(() {}); // Ensure the button updates
-                  }, // Allow multiple lines if Shift + Enter is used
                 ),
               ),
-            ),
-            viewModel.isLoading
-                ? CircularProgressIndicator()
-                : IconButton(
-                    icon: Icon(Icons.send),
-                    onPressed: textController.text.isEmpty
-                        ? null
-                        : () {
-                            final text = textController.text; // Clean text
-                            if (text.isNotEmpty) {
-                              textController.clear(); // Clear input field
-                              viewModel.sendInputMessage(text);
-                              focusNode.requestFocus();
-                            }
-                          },
-                  ),
-          ],
+              viewModel.isLoading
+                  ? Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              )
+                  : IconButton(
+                icon: Icon(Icons.send),
+                onPressed: textController.text.isEmpty
+                    ? null
+                    : () {
+                  final text = textController.text.trim();
+                  if (text.isNotEmpty) {
+                    textController.clear();
+                    viewModel.sendInputMessage(text);
+                  }
+                },
+              ),
+            ],
+          ),
         ),
-      ),
+        const SizedBox(height: 10), // Adds extra space below input bar
+      ],
     );
   }
+
+
 }
 
 // A helper function to create default question cards
 Widget _buildDefaultQuestionCard(String question) {
   return Card(
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(14),
+      side: BorderSide(color: Colors.grey.shade200, width: 1.0),
     ),
-    elevation: 2,
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Text(
-          question,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 14, color: Colors.black),
+    elevation: 2, // Lower elevation for a more compact look
+    child: SizedBox(
+      width: 80, // Reduce the width
+      height: 30, // Reduce the height
+      child: Padding(
+        padding: const EdgeInsets.all(4.0), // Reduce padding
+        child: Center(
+          child: Text(
+            question,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 14, color: Colors.black), // Smaller font size
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis, // Prevents overflow
+          ),
         ),
       ),
     ),
   );
 }
+
