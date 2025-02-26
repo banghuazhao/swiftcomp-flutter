@@ -243,7 +243,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
             IconButton(
               icon: const Icon(Icons.thumb_up_outlined, size: 15),
               onPressed: () {
-                viewModel.toggleMessageLike(message);
+                viewModel.toggleMessageLikeStatus(message, true);
               },
               style: ButtonStyle(
                 padding: WidgetStateProperty.all(const EdgeInsets.all(6)),
@@ -254,7 +254,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
             IconButton(
               icon: const Icon(Icons.thumb_down_outlined, size: 15),
               onPressed: () {
-                viewModel.toggleMessageDislike(message);
+                viewModel.toggleMessageLikeStatus(message, false);
               },
               style: ButtonStyle(
                 padding: WidgetStateProperty.all(const EdgeInsets.all(6)),
@@ -265,7 +265,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
             IconButton(
               icon: Icon(Icons.thumb_up, size: 15, color: Colors.grey[700]),
               onPressed: () {
-                viewModel.toggleMessageLike(message);
+                viewModel.toggleMessageLikeStatus(message, message.isLiked!);
               },
               style: ButtonStyle(
                 padding: WidgetStateProperty.all(const EdgeInsets.all(6)),
@@ -276,7 +276,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
             IconButton(
               icon: Icon(Icons.thumb_down, size: 15, color: Colors.grey[700]),
               onPressed: () {
-                viewModel.toggleMessageDislike(message);
+                viewModel.toggleMessageLikeStatus(message, message.isLiked!);
               },
               style: ButtonStyle(
                 padding: WidgetStateProperty.all(const EdgeInsets.all(6)),
@@ -404,7 +404,6 @@ class _ChatMessageListState extends State<ChatMessageList> {
                               .contains(LogicalKeyboardKey.shiftLeft) ||
                           HardwareKeyboard.instance.logicalKeysPressed
                               .contains(LogicalKeyboardKey.shiftRight);
-
                       if (isShiftPressed) {
                         // Insert newline
                         final text = textController.text;
@@ -413,14 +412,12 @@ class _ChatMessageListState extends State<ChatMessageList> {
                           TextPosition(offset: textController.text.length),
                         );
                       } else if (!viewModel.isLoading) {
-                        // Send message
                         final text = textController.text.trim();
                         if (text.isNotEmpty) {
                           textController.clear();
                           viewModel.sendInputMessage(text);
                         }
                       }
-
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         focusNode.requestFocus();
                       });
@@ -468,7 +465,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
             ],
           ),
         ),
-        const SizedBox(height: 10), // Adds extra space below input bar
+        const SizedBox(height: 10),
       ],
     );
   }
