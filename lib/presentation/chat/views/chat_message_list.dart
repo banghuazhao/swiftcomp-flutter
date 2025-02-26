@@ -113,12 +113,13 @@ class _ChatMessageListState extends State<ChatMessageList> {
           const SizedBox(height: 36),
 
           // Input Bar only on Web
-          if (kIsWeb)...[
+          if (kIsWeb) ...[
             inputBar(viewModel),
-           const SizedBox(height: 10),
+            const SizedBox(height: 10),
           ],
 
-          Center( // Center the grid
+          Center(
+            // Center the grid
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 maxWidth: 800, // Adjust as needed to keep it centered
@@ -143,8 +144,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
                         onTap: () async {
                           await viewModel.onDefaultQuestionsTapped(index);
                         },
-                        child: _buildDefaultQuestionCard(
-                            viewModel.defaultQuestions[index]),
+                        child: _buildDefaultQuestionCard(viewModel.defaultQuestions[index]),
                       );
                     },
                   );
@@ -216,8 +216,8 @@ class _ChatMessageListState extends State<ChatMessageList> {
           onPressed: viewModel.isMessageCopying(message)
               ? null
               : () async {
-            viewModel.copyMessage(message);
-          },
+                  viewModel.copyMessage(message);
+                },
           style: ButtonStyle(
             padding: WidgetStateProperty.all(const EdgeInsets.all(6)),
             minimumSize: WidgetStateProperty.all(Size.zero),
@@ -238,14 +238,10 @@ class _ChatMessageListState extends State<ChatMessageList> {
           ),
         ),
 
-        // Like and Dislike Buttons (Only for Assistant Messages)default value (false) when isDisliked or isLiked is null.
         if (viewModel.isAssistantMessage(message)) ...[
-          // Like Icon (Only Show if Not Disliked)
-          if (!(message.isDisliked ?? false))
+          if (message.isLiked == null)
             IconButton(
-              icon: message.isLiked ?? false
-                  ? Icon(Icons.thumb_up, size: 15, color: Colors.grey[700])
-                  : const Icon(Icons.thumb_up_outlined, size: 15),
+              icon: const Icon(Icons.thumb_up_outlined, size: 15),
               onPressed: () {
                 viewModel.toggleMessageLike(message);
               },
@@ -254,13 +250,31 @@ class _ChatMessageListState extends State<ChatMessageList> {
                 minimumSize: WidgetStateProperty.all(Size.zero),
               ),
             ),
-
-          // Dislike Icon (Only Show if Not Liked) default value (false) when isDisliked or isLiked is null.
-          if (!(message.isLiked ?? false))
+          if (message.isLiked == null)
             IconButton(
-              icon: message.isDisliked ?? false
-                  ? Icon(Icons.thumb_down, size: 15, color: Colors.grey[700])
-                  : const Icon(Icons.thumb_down_outlined, size: 15),
+              icon: const Icon(Icons.thumb_down_outlined, size: 15),
+              onPressed: () {
+                viewModel.toggleMessageDislike(message);
+              },
+              style: ButtonStyle(
+                padding: WidgetStateProperty.all(const EdgeInsets.all(6)),
+                minimumSize: WidgetStateProperty.all(Size.zero),
+              ),
+            ),
+          if (message.isLiked != null && message.isLiked!)
+            IconButton(
+              icon: Icon(Icons.thumb_up, size: 15, color: Colors.grey[700]),
+              onPressed: () {
+                viewModel.toggleMessageLike(message);
+              },
+              style: ButtonStyle(
+                padding: WidgetStateProperty.all(const EdgeInsets.all(6)),
+                minimumSize: WidgetStateProperty.all(Size.zero),
+              ),
+            ),
+          if (message.isLiked != null && !message.isLiked!)
+            IconButton(
+              icon: Icon(Icons.thumb_down, size: 15, color: Colors.grey[700]),
               onPressed: () {
                 viewModel.toggleMessageDislike(message);
               },
@@ -273,8 +287,6 @@ class _ChatMessageListState extends State<ChatMessageList> {
       ],
     );
   }
-
-
 
   Widget buildAssistantMessage(ChatViewModel viewModel, Message message) {
     return Column(
@@ -326,8 +338,7 @@ class _ChatMessageListState extends State<ChatMessageList> {
     return StreamBuilder<ThreadResponse>(
         stream: viewModel.threadResponseController.stream,
         builder: (context, snapshot) {
-          return Align(
-              alignment: Alignment.centerLeft, child: streamWidget(snapshot));
+          return Align(alignment: Alignment.centerLeft, child: streamWidget(snapshot));
         });
   }
 
@@ -388,10 +399,11 @@ class _ChatMessageListState extends State<ChatMessageList> {
                 child: KeyboardListener(
                   focusNode: FocusNode(),
                   onKeyEvent: (KeyEvent event) {
-                    if (event is KeyDownEvent &&
-                        event.logicalKey == LogicalKeyboardKey.enter) {
-                      final isShiftPressed = HardwareKeyboard.instance.logicalKeysPressed.contains(LogicalKeyboardKey.shiftLeft) ||
-                          HardwareKeyboard.instance.logicalKeysPressed.contains(LogicalKeyboardKey.shiftRight);
+                    if (event is KeyDownEvent && event.logicalKey == LogicalKeyboardKey.enter) {
+                      final isShiftPressed = HardwareKeyboard.instance.logicalKeysPressed
+                              .contains(LogicalKeyboardKey.shiftLeft) ||
+                          HardwareKeyboard.instance.logicalKeysPressed
+                              .contains(LogicalKeyboardKey.shiftRight);
 
                       if (isShiftPressed) {
                         // Insert newline
@@ -434,25 +446,25 @@ class _ChatMessageListState extends State<ChatMessageList> {
               ),
               viewModel.isLoading
                   ? Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              )
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    )
                   : IconButton(
-                icon: Icon(Icons.send),
-                onPressed: textController.text.isEmpty
-                    ? null
-                    : () {
-                  final text = textController.text.trim();
-                  if (text.isNotEmpty) {
-                    textController.clear();
-                    viewModel.sendInputMessage(text);
-                  }
-                },
-              ),
+                      icon: Icon(Icons.send),
+                      onPressed: textController.text.isEmpty
+                          ? null
+                          : () {
+                              final text = textController.text.trim();
+                              if (text.isNotEmpty) {
+                                textController.clear();
+                                viewModel.sendInputMessage(text);
+                              }
+                            },
+                    ),
             ],
           ),
         ),
@@ -460,8 +472,6 @@ class _ChatMessageListState extends State<ChatMessageList> {
       ],
     );
   }
-
-
 }
 
 // A helper function to create default question cards
@@ -490,4 +500,3 @@ Widget _buildDefaultQuestionCard(String question) {
     ),
   );
 }
-

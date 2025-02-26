@@ -298,7 +298,7 @@ class ChatViewModel extends ChangeNotifier {
   }
 
   void toggleMessageDislike(Message message) {
-    message.isDisliked = true;
+    message.isLiked = false;
     notifyListeners();
   }
 }
