@@ -61,7 +61,7 @@ class _CompositesToolsState extends State<CompositesTools> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Composites Tools"),
-        backgroundColor: const Color.fromRGBO(51, 66, 78, 1),
+        backgroundColor: const Color.fromRGBO(66, 66, 66, 1.0),
         actions: [
           Consumer<ChatViewModel>(
             builder: (context, viewModel, _) {

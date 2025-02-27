@@ -29,7 +29,7 @@ class _CompositesToolCreationState extends State<CompositesToolCreation> {
         return Scaffold(
           appBar: AppBar(
             title: const Text("Composites Tools"),
-            backgroundColor: Color.fromRGBO(51, 66, 78, 1),
+            backgroundColor: Colors.grey.shade800,
             centerTitle: true,
             actions: [
               Padding(
