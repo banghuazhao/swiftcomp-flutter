@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:data/mappers/domain_exception_mapper.dart';
 import 'package:domain/entities/domain_exceptions.dart';
 import 'package:domain/entities/linkedin_user_profile.dart';
-import 'package:domain/entities/linkedin_user_profile.dart';
 import 'package:domain/entities/user.dart';
 import 'package:domain/repositories_abstract/auth_repository.dart';
 import 'package:flutter/foundation.dart';

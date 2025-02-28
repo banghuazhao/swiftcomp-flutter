@@ -1,5 +1,4 @@
 import 'package:domain/use_cases/auth_use_case.dart';
-import 'package:domain/use_cases/auth_use_case.dart';
 import 'package:flutter/material.dart';
 
 class ForgetPasswordViewModel extends ChangeNotifier {
