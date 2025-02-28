@@ -108,12 +108,12 @@ class _CompositesToolsState extends State<CompositesTools> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
+                      backgroundColor: Colors.white,
                       elevation: 4,
                     ),
                     child: const Text(
                       '+ Contribute',
-                      style: TextStyle(fontSize: 14, color: Colors.white),
+                      style: TextStyle(fontSize: 14, color: Colors.black),
                     ),
                   ),
                   const SizedBox(width: 14),
