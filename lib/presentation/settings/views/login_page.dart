@@ -491,7 +491,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
         decoration: BoxDecoration(
           color: Colors.white, // Button background color
-          borderRadius: BorderRadius.circular(12), // Rounded corners
+          borderRadius: BorderRadius.circular(10), // Rounded corners
           border: Border.all(color: Colors.grey.shade300, width: 1), // Border color and width
         ),
         child: Row(
