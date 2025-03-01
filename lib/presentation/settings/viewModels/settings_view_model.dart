@@ -9,6 +9,7 @@ import 'package:domain/use_cases/auth_use_case.dart';
 import 'package:domain/use_cases/user_use_case.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:infrastructure/feature_flag_provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
@@ -182,9 +183,11 @@ class SettingsViewModel extends ChangeNotifier {
     if (Platform.isIOS) {
       Share.share("http://itunes.apple.com/app/id1297825946",
           subject: appName, sharePositionOrigin: Rect.fromLTRB(0, 0, size.width, size.height / 2));
-    } else {
+    } else if (Platform.isAndroid) {
       Share.share("https://play.google.com/store/apps/details?id=com.banghuazhao.swiftcomp",
           subject: appName);
+    } else {
+      await Clipboard.setData(ClipboardData(text: "https://compositesai.com"));
     }
   }
 
