@@ -81,8 +81,9 @@ class _CompositesToolCreationState extends State<CompositesToolCreation> {
                   label: "Tool Title",
                   child: TextField(
                     controller: _titleController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       hintText: "Enter tool title",
+                      hintStyle: TextStyle(color: Colors.grey.shade500),
                       border: InputBorder.none,
                     ),
                   ),
@@ -91,8 +92,9 @@ class _CompositesToolCreationState extends State<CompositesToolCreation> {
                   label: "Description",
                   child: TextField(
                     controller: _descriptionController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: "Add a short description about what this tool does",
+                      hintStyle: TextStyle(color: Colors.grey.shade500),
                       border: InputBorder.none,
                     ),
                     maxLines: null,
@@ -103,8 +105,9 @@ class _CompositesToolCreationState extends State<CompositesToolCreation> {
                   label: "Instructions",
                   child: TextField(
                     controller: _instructionsController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: "What does this tool do? How does it work?",
+                      hintStyle: TextStyle(color: Colors.grey.shade500),
                       border: InputBorder.none,
                     ),
                     maxLines: null,
@@ -112,26 +115,28 @@ class _CompositesToolCreationState extends State<CompositesToolCreation> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                TextButton.icon(
-                  onPressed: _uploadFile,
-                  icon: const Icon(Icons.upload_file),
-                  label: const Text("Upload File"),
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    backgroundColor: Colors.teal,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ).copyWith(
-                    overlayColor: MaterialStateProperty.all(Colors.teal.shade300), // Hover background color
-                    elevation: MaterialStateProperty.resolveWith<double>(
-                          (states) {
-                        if (states.contains(MaterialState.hovered)) {
-                          return 8; // Increased elevation on hover
-                        }
-                        return 4; // Default elevation
-                      },
+                SizedBox(
+                  width: 100, // Set your desired width
+                  child: TextButton.icon(
+                    onPressed: _uploadFile,
+                    label: const Text("Upload File"),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      backgroundColor: Colors.grey.shade800,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ).copyWith(
+                      overlayColor: MaterialStateProperty.all(Colors.grey.shade600),
+                      elevation: MaterialStateProperty.resolveWith<double>(
+                            (states) {
+                          if (states.contains(MaterialState.hovered)) {
+                            return 8;
+                          }
+                          return 4;
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -163,7 +168,7 @@ class _CompositesToolCreationState extends State<CompositesToolCreation> {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.teal,
+                color: Colors.black,
               ),
             ),
             const SizedBox(height: 8),
