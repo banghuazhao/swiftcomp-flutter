@@ -69,7 +69,7 @@ class _CompositesToolCreationState extends State<CompositesToolCreation> {
             ],
           ),
           body: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(//EdgeInsets.symmetric constructor allows to specify horizontal and vertical padding separately
                 horizontal: context.horizontalSidePaddingForContentWidth, vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
