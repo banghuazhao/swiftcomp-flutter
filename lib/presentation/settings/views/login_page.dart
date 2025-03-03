@@ -269,15 +269,17 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       // App Icon
                       Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        // Adjust top padding
+                        padding: const EdgeInsets.only(top: 10.0), // Adjust top padding
                         child: Align(
                           alignment: Alignment.topCenter,
-                          child: Image.asset(
-                            'images/app_icon.png',
-                            height: 35,
-                            width: 35,
-                            fit: BoxFit.contain,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.asset(
+                              'images/app_icon.png',
+                              height: 40,
+                              width: 40,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
