@@ -510,10 +510,10 @@ class _LoginPageState extends State<LoginPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
         decoration: BoxDecoration(
-          color: Colors.white, // Button background color
-          borderRadius: BorderRadius.circular(12), // Rounded corners
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
-              color: Colors.grey.shade300, width: 1), // Border color and width
+              color: Colors.grey.shade300, width: 1),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
