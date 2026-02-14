@@ -124,12 +124,7 @@ class LoginViewModel extends ChangeNotifier {
       }
 
       // Validate the ID token with your backend
-      final bool isValid = await authUseCase.validateGoogleToken(idToken);
-      if (!isValid) {
-        throw Exception('Google token validation failed.');
-      }
-      // Sync the user data
-      await syncUser(user.displayName, user.email, user.photoUrl);
+      await authUseCase.validateGoogleToken(idToken);
 
       // Mark signing-in as successful
       _isSigningIn = true;
