@@ -263,7 +263,8 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<bool> validateGoogleToken(String idToken) async {
     final baseURL = await apiEnvironment.getBaseUrl();
-    final url = Uri.parse('$baseURL/auth/sign_in_with_google');
+    // Backend expects: POST /api/v1/auths/oauth/google with { idToken }
+    final url = Uri.parse('$baseURL/auths/oauth/google');
 
     try {
       final response = await client.post(
