@@ -57,7 +57,7 @@ class ChatViewModel extends ChangeNotifier {
   final assistantId = "asst_pxUDI3A9Q8afCqT9cqgUkWQP";
 
   List<String> defaultQuestions = [
-    "What is Composites AI?",
+    "What is CompositesAI?",
     "What are the challenges for modeling composites?",
     "Can you tell me the early history of composites?",
     "What are common misconceptions of rules of mixtures?",
