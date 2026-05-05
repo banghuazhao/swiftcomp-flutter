@@ -300,6 +300,39 @@ class ChatViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Clears chat UI state when the session ends (logout, account deletion, QA env switch).
+  /// Call after auth token is invalidated so the next login does not see another user's thread.
+  Future<void> clearChatStateOnLogout() async {
+    selectedChat = null;
+    messages = [];
+    chats = [];
+    pinnedChats = [];
+    allChatsLoaded = true;
+    _nextChatListPage = 2;
+    isLoadingMessages = false;
+    isLoadingChats = false;
+    isLoadingMoreChats = false;
+    isSendingMessage = false;
+    errorMessage = null;
+    copyingMessageId = null;
+    _submittingFeedbackMessageIds.clear();
+    isSubmittingFeedback = false;
+
+    if (!threadResponseController.isClosed) {
+      await threadResponseController.close();
+    }
+    threadResponseController = StreamController<Message>.broadcast();
+
+    if (scrollController.hasClients) {
+      scrollController.jumpTo(0);
+    }
+    if (chatListScrollController.hasClients) {
+      chatListScrollController.jumpTo(0);
+    }
+
+    notifyListeners();
+  }
+
   void setSendingMessage(bool value) {
     isSendingMessage = value;
     notifyListeners();

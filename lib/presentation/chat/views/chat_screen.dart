@@ -511,6 +511,9 @@ class _ChatScreenState extends State<ChatScreen>
               );
               if (user != null) {
                 await viewModel.checkAuthStatus();
+                if (viewModel.isLoggedIn) {
+                  await viewModel.fetchChats();
+                }
                 setState(() {}); // Trigger UI rebuild
               }
             },
